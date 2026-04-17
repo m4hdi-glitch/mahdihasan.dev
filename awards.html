@@ -5,6 +5,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Champion Certificate</title>
 <style>
+  /* Ensure padding doesn't increase width */
+  * {
+    box-sizing: border-box;
+  }
+
   body {
     margin: 0;
     font-family: 'Segoe UI', Roboto, sans-serif;
@@ -12,10 +17,12 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100vh;
+    min-height: 100vh;
+    padding: 20px; /* Space for small screens */
   }
+
   .certificate {
-    width: 90%;
+    width: 100%;
     max-width: 600px;
     background: #fff;
     border: 8px solid #ffd700;
@@ -25,31 +32,38 @@
     box-shadow: 0 12px 30px rgba(0,0,0,0.25);
     position: relative;
   }
+
   .certificate h1 {
     font-size: 28px;
     color: #333;
     margin-bottom: 8px;
   }
+
   .certificate h2 {
     font-size: 22px;
     color: #444;
     margin: 12px 0;
   }
+
   .certificate .bird-img {
     width: 120px;
+    max-width: 100%; /* Responsive */
     height: auto;
     margin: 16px 0;
   }
+
   .certificate .score {
     font-size: 20px;
     color: #555;
     margin: 8px 0;
   }
+
   .certificate .footer {
     margin-top: 40px;
     font-size: 14px;
     color: #888;
   }
+
   .ribbon {
     width: 80px;
     height: 80px;
@@ -66,12 +80,24 @@
     box-shadow: 0 4px 12px rgba(0,0,0,0.3);
     font-size: 18px;
   }
+
   .signature {
     width: 200px;
+    max-width: 100%; /* Responsive */
     margin-top: 20px;
     display: block;
     margin-left: auto;
     margin-right: auto;
+  }
+
+  /* Link Container Centering */
+  .link-container {
+    font-family: sans-serif;
+    display: flex;
+    align-items: center;
+    justify-content: center; /* Centers horizontally */
+    gap: 8px;
+    margin-top: 15px;
   }
 </style>
 </head>
@@ -79,18 +105,20 @@
 
 <div class="certificate">
   <div class="ribbon">🏆</div>
-  <h1>Certificate of Unemployment</h1>
+  <h1>Certificate of Achievement</h1>
   <h2>This certificate is proudly presented to</h2>
   <h1 id="playerName">Yousef Allaudin</h1>
   <img class="bird-img" src="Yousef.png" alt="Champion Bird">
+  
   <div class="score">For achieving the highest score: <strong id="playerScore">1099</strong> points</div>
-<div style="font-family: sans-serif; display: flex; align-items: center; gap: 8px;">
-    <span style="font-weight: 600;text-align: center; color: #000000e6; font-size: 14px;">:</span>
+
+  <div class="link-container">
+    <span style="font-weight: 600; color: #000000e6; font-size: 14px;">Website:</span>
     <a href="http://www.mahdihasan.site/r.html" style="color: #0a66c2; text-decoration: none; font-size: 14px; font-weight: 600;">
         www.mahdihasan.site/r.html
     </a>
-</div>
-  <!-- Signature -->
+  </div>
+
   <img class="signature" src="signature.png" alt="Signature">
 
   <div class="footer">Flappy Khan • Honoring Your Champion</div>
