@@ -1,0 +1,1396 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bangladesh MHM School & College — Gallery</title>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Sans:wght@300;400;500;600&family=Courier+Prime&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --green: #1a5c2a;
+    --green-light: #2e7d32;
+    --red: #b71c1c;
+    --gold: #c8a84b;
+    --bg: #f8f7f4;
+    --surface: #ffffff;
+    --text: #1a1a1a;
+    --muted: #6b7280;
+    --border: #e5e0d8;
+    --accent: #1a5c2a;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+  }
+
+  /* ── LOGIN PAGE ── */
+  #login-page {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: #fff;
+    padding: 2rem;
+  }
+
+  .login-header {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 2.5rem;
+  }
+
+  .login-logo {
+    width: 80px;
+    height: 80px;
+    object-fit: contain;
+  }
+
+  .login-logo-placeholder {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--green) 0%, #2e7d32 50%, #b71c1c 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 11px;
+    color: #fff;
+    font-weight: 600;
+    text-align: center;
+    letter-spacing: 0.02em;
+    border: 3px solid var(--gold);
+  }
+
+  .login-school-name {
+    text-align: left;
+  }
+
+  .login-school-name .top-line {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 1.35rem;
+    font-weight: 600;
+    color: #1a1a1a;
+    line-height: 1.2;
+  }
+
+  .login-school-name .red-line {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 1.35rem;
+    font-weight: 600;
+    color: var(--red);
+    line-height: 1.2;
+  }
+
+  .login-school-name .sub-line {
+    font-size: 0.95rem;
+    color: #444;
+    margin-top: 2px;
+  }
+
+  .login-title {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 1.9rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    color: #1a1a1a;
+    margin-bottom: 2rem;
+    text-transform: uppercase;
+  }
+
+  .login-form {
+    width: 100%;
+    max-width: 520px;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .login-input {
+    width: 100%;
+    padding: 1rem 1.2rem;
+    font-size: 1rem;
+    font-family: 'DM Sans', sans-serif;
+    border: 1.5px solid #d1d5db;
+    border-radius: 6px;
+    background: #fff;
+    color: #1a1a1a;
+    outline: none;
+    transition: border-color 0.2s;
+  }
+
+  .login-input:focus {
+    border-color: var(--green);
+  }
+
+  .login-input::placeholder { color: #9ca3af; }
+
+  .login-btn {
+    width: 55%;
+    margin: 0.5rem auto 0;
+    padding: 0.9rem;
+    font-size: 1.1rem;
+    font-weight: 600;
+    font-family: 'DM Sans', sans-serif;
+    letter-spacing: 0.04em;
+    background: #f0f0f0;
+    color: #1a1a1a;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background 0.2s;
+  }
+
+  .login-btn:hover { background: #e0e0e0; }
+  .login-btn:active { background: #d0d0d0; }
+
+  .login-error {
+    color: var(--red);
+    font-size: 0.88rem;
+    text-align: center;
+    min-height: 20px;
+  }
+
+  .login-footer {
+    margin-top: 3rem;
+    text-align: center;
+    font-family: 'Courier Prime', monospace;
+    font-size: 0.82rem;
+    color: #555;
+    line-height: 1.8;
+  }
+
+  .login-footer a { color: var(--red); text-decoration: none; }
+  .login-footer a:hover { text-decoration: underline; }
+
+  /* ── GALLERY APP ── */
+  #gallery-page { display: none; min-height: 100vh; flex-direction: column; }
+
+  .topbar {
+    background: transparent;
+    padding: 1rem 2rem 0;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+  .topbar-left {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  .topbar-logo {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 0.01em;
+    color: #fff;
+    border: 2px solid rgba(255,255,255,0.4);
+    overflow: hidden;
+  }
+
+  .topbar-logo img { width: 100%; height: 100%; object-fit: cover; }
+
+  .topbar-title {
+    font-family: 'DM Serif Display', serif;
+    font-size: 1.1rem;
+    letter-spacing: 0.02em;
+  }
+
+  .topbar-right { display: flex; align-items: center; gap: 1rem; }
+
+  .topbar-email {
+    font-size: 0.82rem;
+    opacity: 0.8;
+  }
+
+.topbar-signout {
+  padding: 0.35rem 1rem;
+  font-size: 0.82rem;
+  background: none;
+  color: var(--green);
+  border: 1px solid var(--green);
+  border-radius: 20px;
+  cursor: pointer;
+  transition: background 0.2s;
+  font-family: 'DM Sans', sans-serif;
+}
+
+  .topbar-signout:hover { background: rgba(255,255,255,0.25); }
+
+  .app-body {
+    display: flex;
+    flex: 1;
+    min-height: calc(100vh - 60px);
+  }
+
+  /* Sidebar */
+  .sidebar {
+    width: 240px;
+    background: var(--surface);
+    border-right: 1px solid var(--border);
+    display: flex;
+    flex-direction: column;
+    padding: 1.5rem 0;
+    flex-shrink: 0;
+  }
+
+  .sidebar-section-label {
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    color: var(--muted);
+    text-transform: uppercase;
+    padding: 0 1.25rem;
+    margin-bottom: 0.5rem;
+    margin-top: 1rem;
+  }
+
+  .sidebar-section-label:first-child { margin-top: 0; }
+
+  .sidebar-item {
+    display: flex;
+    align-items: center;
+    gap: 0.7rem;
+    padding: 0.55rem 1.25rem;
+    font-size: 0.9rem;
+    color: var(--text);
+    cursor: pointer;
+    border-radius: 0;
+    transition: background 0.15s;
+    border: none;
+    background: none;
+    width: 100%;
+    text-align: left;
+  }
+
+  .sidebar-item:hover { background: #f3f0ea; }
+  .sidebar-item.active { background: #e8f5e9; color: var(--green); font-weight: 500; }
+
+  .sidebar-item svg { flex-shrink: 0; opacity: 0.7; }
+  .sidebar-item.active svg { opacity: 1; }
+
+  .sidebar-folder-item {
+    display: flex;
+    align-items: center;
+    gap: 0.7rem;
+    padding: 0.5rem 1.25rem 0.5rem 2rem;
+    font-size: 0.875rem;
+    color: var(--text);
+    cursor: pointer;
+    background: none;
+    border: none;
+    width: 100%;
+    text-align: left;
+    transition: background 0.15s;
+    border-radius: 0;
+  }
+
+  .sidebar-folder-item:hover { background: #f3f0ea; }
+  .sidebar-folder-item.active { background: #e8f5e9; color: var(--green); font-weight: 500; }
+
+  .new-folder-btn {
+    margin: 0.75rem 1rem 0;
+    padding: 0.55rem;
+    font-size: 0.82rem;
+    color: var(--green);
+    border: 1.5px dashed var(--green);
+    border-radius: 6px;
+    background: none;
+    cursor: pointer;
+    font-family: 'DM Sans', sans-serif;
+    transition: background 0.15s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.4rem;
+  }
+
+  .new-folder-btn:hover { background: #e8f5e9; }
+
+  /* Main content */
+  .main-content {
+    flex: 1;
+    padding: 2rem;
+    overflow-y: auto;
+  }
+
+  .content-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 1.5rem;
+  }
+
+  .content-title {
+    font-family: 'DM Serif Display', serif;
+    font-size: 1.6rem;
+    color: var(--text);
+  }
+
+  .content-actions { display: flex; gap: 0.75rem; align-items: center; }
+
+  .view-toggle {
+    display: flex;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    overflow: hidden;
+  }
+
+  .view-btn {
+    padding: 0.4rem 0.7rem;
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: var(--muted);
+    transition: background 0.15s;
+  }
+
+  .view-btn.active { background: var(--green); color: #fff; }
+
+  .upload-btn {
+    padding: 0.5rem 1.1rem;
+    background: var(--green);
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    font-size: 0.875rem;
+    font-family: 'DM Sans', sans-serif;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    transition: background 0.2s;
+  }
+
+  .upload-btn:hover { background: var(--green-light); }
+
+  /* Breadcrumb */
+  .breadcrumb {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 1.25rem;
+    font-size: 0.875rem;
+    color: var(--muted);
+  }
+
+  .breadcrumb span { cursor: pointer; }
+  .breadcrumb span:hover { color: var(--green); }
+  .breadcrumb .sep { color: var(--border); }
+  .breadcrumb .current { color: var(--text); font-weight: 500; }
+
+  /* Upload Zone */
+  .upload-zone {
+    border: 2px dashed var(--border);
+    border-radius: 12px;
+    padding: 2.5rem;
+    text-align: center;
+    transition: all 0.2s;
+    cursor: pointer;
+    margin-bottom: 2rem;
+    background: #fafaf8;
+  }
+
+  .upload-zone.drag-over {
+    border-color: var(--green);
+    background: #e8f5e9;
+  }
+
+  .upload-zone-icon {
+    width: 48px;
+    height: 48px;
+    margin: 0 auto 1rem;
+    color: var(--muted);
+  }
+
+  .upload-zone h3 {
+    font-size: 1rem;
+    font-weight: 500;
+    margin-bottom: 0.4rem;
+  }
+
+  .upload-zone p {
+    font-size: 0.82rem;
+    color: var(--muted);
+  }
+
+  .upload-zone p span {
+    color: var(--green);
+    font-weight: 500;
+    cursor: pointer;
+  }
+
+  #file-input { display: none; }
+
+  /* Upload progress */
+  .upload-queue {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .upload-item {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.6rem 0.8rem;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    font-size: 0.82rem;
+  }
+
+  .upload-item-name { flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .upload-item-progress { width: 100px; height: 4px; background: var(--border); border-radius: 2px; overflow: hidden; }
+  .upload-item-bar { height: 100%; background: var(--green); border-radius: 2px; transition: width 0.3s; }
+  .upload-item-status { font-size: 0.75rem; color: var(--muted); white-space: nowrap; }
+
+  /* Folder grid */
+  .folders-section { margin-bottom: 2rem; }
+  .section-label {
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    color: var(--muted);
+    text-transform: uppercase;
+    margin-bottom: 0.75rem;
+  }
+
+  .folders-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    gap: 0.75rem;
+  }
+
+  .folder-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 1rem;
+    cursor: pointer;
+    transition: all 0.2s;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    position: relative;
+  }
+
+  .folder-card:hover { border-color: var(--green); background: #fafff8; transform: translateY(-1px); }
+
+  .folder-icon {
+    width: 44px;
+    height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--gold);
+  }
+
+  .folder-name {
+    font-size: 0.85rem;
+    font-weight: 500;
+    text-align: center;
+    word-break: break-word;
+    color: var(--text);
+  }
+
+  .folder-count {
+    font-size: 0.75rem;
+    color: var(--muted);
+  }
+
+  .folder-delete {
+    position: absolute;
+    top: 6px;
+    right: 6px;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: none;
+    border: none;
+    color: var(--muted);
+    cursor: pointer;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    transition: all 0.15s;
+  }
+
+.folder-delete { display: flex; }
+  .folder-delete:hover { background: #fee2e2; color: var(--red); }
+
+  /* Image grid */
+  .images-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 1rem;
+  }
+
+  .images-grid.list-view {
+    grid-template-columns: 1fr;
+    gap: 0.5rem;
+  }
+
+  .image-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    overflow: hidden;
+    cursor: pointer;
+    transition: all 0.2s;
+    position: relative;
+  }
+
+  .image-card:hover { transform: translateY(-2px); box-shadow: 0 4px 16px rgba(0,0,0,0.08); }
+
+  .image-thumb {
+    width: 100%;
+    height: 160px;
+    object-fit: cover;
+    display: block;
+    background: #f0ede6;
+  }
+
+  .images-grid.list-view .image-thumb {
+    width: 56px;
+    height: 56px;
+    border-radius: 6px;
+    flex-shrink: 0;
+  }
+
+  .images-grid.list-view .image-card {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.5rem;
+    border-radius: 8px;
+  }
+
+  .image-info {
+    padding: 0.6rem 0.75rem;
+  }
+
+  .images-grid.list-view .image-info {
+    padding: 0;
+    flex: 1;
+    min-width: 0;
+  }
+
+  .image-name {
+    font-size: 0.82rem;
+    font-weight: 500;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    color: var(--text);
+  }
+
+  .image-date {
+    font-size: 0.72rem;
+    color: var(--muted);
+    margin-top: 2px;
+    font-family: 'Courier Prime', monospace;
+  }
+
+  .image-overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(26,92,42,0.7);
+    opacity: 0;
+    transition: opacity 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.75rem;
+  }
+
+  .image-card:hover .image-overlay { opacity: 1; }
+
+  .images-grid.list-view .image-overlay { display: none; }
+
+  .img-action {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.9);
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--text);
+    transition: transform 0.15s;
+  }
+
+  .img-action:hover { transform: scale(1.1); }
+  .img-action.delete:hover { background: #fee2e2; color: var(--red); }
+
+  .list-delete {
+    background: none;
+    border: none;
+    color: var(--muted);
+    cursor: pointer;
+    padding: 0.3rem;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.15s;
+  }
+
+  .list-delete:hover { background: #fee2e2; color: var(--red); }
+
+  /* Lightbox */
+  .lightbox {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.92);
+    z-index: 999;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+  }
+
+  .lightbox.open { display: flex; }
+
+  .lightbox img {
+    max-width: 90vw;
+    max-height: 85vh;
+    object-fit: contain;
+    border-radius: 4px;
+  }
+
+  .lightbox-close {
+    position: fixed;
+    top: 1.5rem;
+    right: 1.5rem;
+    background: rgba(255,255,255,0.15);
+    border: none;
+    color: #fff;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 1.2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .lightbox-info {
+    position: fixed;
+    bottom: 1.5rem;
+    left: 50%;
+    transform: translateX(-50%);
+    color: rgba(255,255,255,0.7);
+    font-size: 0.82rem;
+    font-family: 'Courier Prime', monospace;
+    text-align: center;
+  }
+
+  /* Modal */
+  .modal-bg {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.4);
+    z-index: 500;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .modal-bg.open { display: flex; }
+
+  .modal {
+    background: #fff;
+    border-radius: 12px;
+    padding: 2rem;
+    width: 360px;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.15);
+  }
+
+  .modal h3 { font-size: 1.1rem; font-weight: 600; margin-bottom: 1rem; }
+
+  .modal input {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    border: 1.5px solid var(--border);
+    border-radius: 6px;
+    font-size: 0.9rem;
+    font-family: 'DM Sans', sans-serif;
+    outline: none;
+    margin-bottom: 1rem;
+  }
+
+  .modal input:focus { border-color: var(--green); }
+
+  .modal-actions { display: flex; gap: 0.75rem; justify-content: flex-end; }
+
+  .btn-secondary {
+    padding: 0.55rem 1.1rem;
+    background: none;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 0.875rem;
+    font-family: 'DM Sans', sans-serif;
+  }
+
+  .btn-primary {
+    padding: 0.55rem 1.1rem;
+    background: var(--green);
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 0.875rem;
+    font-family: 'DM Sans', sans-serif;
+  }
+
+  /* Empty state */
+  .empty-state {
+    text-align: center;
+    padding: 4rem 2rem;
+    color: var(--muted);
+  }
+
+  .empty-state svg { margin: 0 auto 1rem; opacity: 0.3; }
+  .empty-state p { font-size: 0.9rem; }
+
+  /* Toast */
+  .toast-container {
+    position: fixed;
+    bottom: 1.5rem;
+    right: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    z-index: 9999;
+  }
+
+  .toast {
+    padding: 0.7rem 1.1rem;
+    border-radius: 8px;
+    font-size: 0.85rem;
+    font-family: 'DM Sans', sans-serif;
+    color: #fff;
+    animation: slideIn 0.25s ease;
+    max-width: 300px;
+  }
+
+  .toast.success { background: var(--green); }
+  .toast.error { background: var(--red); }
+  .toast.info { background: #374151; }
+
+  @keyframes slideIn {
+    from { opacity: 0; transform: translateX(20px); }
+    to { opacity: 1; transform: translateX(0); }
+  }
+
+  /* Loading */
+  .spinner {
+    width: 40px;
+    height: 40px;
+    border: 3px solid var(--border);
+    border-top-color: var(--green);
+    border-radius: 50%;
+    animation: spin 0.7s linear infinite;
+    margin: 4rem auto;
+  }
+
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  .loading-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(255,255,255,0.8);
+    z-index: 200;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .loading-overlay.show { display: flex; }
+</style>
+</head>
+<body>
+
+<div id="login-page">
+  <div class="login-header">
+
+    <img src="BMHM_logo_Nero_AI_Image_Upscaler_Photo_Face.png" alt="School Logo" class="login-logo"
+      onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+    <div class="login-logo-placeholder" style="display:none;">MHM<br>School</div>
+
+    <div class="login-school-name">
+      <div class="top-line">Bangladesh MHM</div>
+      <div class="red-line">School & College</div>
+      <div class="sub-line">IX Science Boys</div>
+    </div>
+  </div>
+
+  <div class="login-title">Admin Panel</div>
+
+  <div class="login-form">
+    <input type="email" id="login-email" class="login-input" placeholder="Email">
+    <input type="password" id="login-pass" class="login-input" placeholder="Password"
+      onkeydown="if(event.key==='Enter') doLogin()">
+    <button class="login-btn" onclick="doLogin()">Enter</button>
+    <div class="login-error" id="login-error"></div>
+  </div>
+
+  <div class="login-footer">
+    For any bugs or issues. Contacts <a href="https://www.instagram.com/mahdihasan1_/">Mahdi Hasan</a><br>
+    © 2026 IX Science Boys
+  </div>
+</div>
+
+<div id="gallery-page" style="display:none; flex-direction:column;">
+  <div class="topbar">
+    <div class="topbar-left">
+
+      <div class="topbar-title"></div>
+    </div>
+    <div class="topbar-right">
+      <span class="topbar-email" id="user-email-display"></span>
+      <button class="topbar-signout" onclick="signOut()">Sign out</button>
+    </div>
+  </div>
+
+  <div class="app-body">
+
+    <div class="sidebar">
+      <span class="sidebar-section-label">Navigation</span>
+      <button class="sidebar-item active" id="nav-all" onclick="navigateAll()">
+        <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+          <rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/>
+          <rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/>
+        </svg>
+        All Photos
+      </button>
+
+      <span class="sidebar-section-label">Folders</span>
+      <div id="sidebar-folders"></div>
+
+      <button class="new-folder-btn" onclick="openFolderModal()">
+        <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+          <line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>
+        </svg>
+        New Folder
+      </button>
+    </div>
+
+    <div class="main-content">
+      <div class="content-header">
+        <h1 class="content-title" id="page-title">All Photos</h1>
+        <div class="content-actions">
+          <div class="view-toggle">
+            <button class="view-btn active" id="grid-btn" onclick="setView('grid')" title="Grid view">
+              <svg width="14" height="14" fill="currentColor" viewBox="0 0 16 16">
+                <path d="M1 2a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1zm5 0a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1zm5 0a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1h-2a1 1 0 0 1-1-1zM1 7a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1zm5 0a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1zm5 0a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1h-2a1 1 0 0 1-1-1zM1 12a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1zm5 0a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1zm5 0a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1h-2a1 1 0 0 1-1-1z"/>
+              </svg>
+            </button>
+            <button class="view-btn" id="list-btn" onclick="setView('list')" title="List view">
+              <svg width="14" height="14" fill="currentColor" viewBox="0 0 16 16">
+                <path fill-rule="evenodd" d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5z"/>
+              </svg>
+            </button>
+          </div>
+          <button class="upload-btn" onclick="document.getElementById('file-input').click()">
+            <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+              <polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/>
+            </svg>
+            Upload
+          </button>
+        </div>
+      </div>
+
+      <div class="breadcrumb" id="breadcrumb">
+        <span onclick="navigateAll()">Gallery</span>
+      </div>
+
+      <div class="upload-zone" id="upload-zone"
+        ondragover="handleDragOver(event)"
+        ondragleave="handleDragLeave(event)"
+        ondrop="handleDrop(event)"
+        onclick="document.getElementById('file-input').click()">
+        <input type="file" id="file-input" multiple accept="image/*" onchange="handleFileSelect(event)">
+        <svg class="upload-zone-icon" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+          <path d="M3 15v4a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-4"/>
+          <polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/>
+        </svg>
+        <h3>Drop photos here</h3>
+        <p>or <span>browse files</span> to upload · JPG, PNG, GIF, WEBP</p>
+      </div>
+
+      <div class="upload-queue" id="upload-queue"></div>
+
+      <div class="folders-section" id="folders-section">
+        <div class="section-label">Folders</div>
+        <div class="folders-grid" id="folders-grid">
+          <div class="spinner"></div>
+        </div>
+      </div>
+
+      <div>
+        <div class="section-label" id="images-label">Photos</div>
+        <div class="images-grid" id="images-grid">
+          <div class="spinner"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="lightbox" id="lightbox" onclick="closeLightbox()">
+  <button class="lightbox-close" onclick="closeLightbox()">✕</button>
+  <img id="lightbox-img" src="" alt="">
+  <div class="lightbox-info" id="lightbox-info"></div>
+</div>
+
+<div class="modal-bg" id="folder-modal">
+  <div class="modal" onclick="event.stopPropagation()">
+    <h3>New Folder</h3>
+    <input type="text" id="folder-name-input" placeholder="Folder name"
+      onkeydown="if(event.key==='Enter') createFolder()">
+    <div class="modal-actions">
+      <button class="btn-secondary" onclick="closeFolderModal()">Cancel</button>
+      <button class="btn-primary" onclick="createFolder()">Create</button>
+    </div>
+  </div>
+</div>
+
+<div class="loading-overlay" id="loading-overlay">
+  <div class="spinner"></div>
+</div>
+
+<div class="toast-container" id="toast-container"></div>
+
+<script>
+// ─── CONFIGURATION ───────────────────────────────────────────────
+// Replace with your Supabase project URL and anon key
+const SUPABASE_URL = 'https://wqeuzmikkpinwmmzqzku.supabase.co';
+const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndxZXV6bWlra3BpbndtbXpxemt1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzcxNDA5MTYsImV4cCI6MjA5MjcxNjkxNn0.kNbq5JsRb2A9_bz3r7fiuqwhX78vV8qxL5SkbpHkR2M';
+const BUCKET = 'gallery'; // Your storage bucket name
+
+// ─────────────────────────────────────────────────────────────────
+
+const { createClient } = supabase;
+const sb = createClient(SUPABASE_URL, SUPABASE_KEY);
+
+let currentUser = null;
+let currentFolder = null; // null = root
+let viewMode = 'grid';
+let allImages = [];
+let allFolders = [];
+
+// ── AUTH ──────────────────────────────────────────────────────────
+async function doLogin() {
+  const email = document.getElementById('login-email').value.trim();
+  const pass = document.getElementById('login-pass').value;
+  const errEl = document.getElementById('login-error');
+  errEl.textContent = '';
+
+  if (!email || !pass) { errEl.textContent = 'Please enter email and password.'; return; }
+
+  showLoading(true);
+  const { data, error } = await sb.auth.signInWithPassword({ email, password: pass });
+  showLoading(false);
+
+  if (error) { errEl.textContent = error.message; return; }
+  currentUser = data.user;
+  showGallery();
+}
+
+async function signOut() {
+  await sb.auth.signOut();
+  currentUser = null;
+  currentFolder = null;
+  document.getElementById('login-page').style.display = 'flex';
+  document.getElementById('gallery-page').style.display = 'none';
+}
+
+async function checkSession() {
+  await sb.auth.signOut();
+}
+
+// ── NAVIGATION ────────────────────────────────────────────────────
+function showGallery() {
+  document.getElementById('login-page').style.display = 'none';
+  document.getElementById('gallery-page').style.display = 'flex';
+  document.getElementById('user-email-display').textContent = currentUser.email;
+  loadAll();
+}
+
+function navigateAll() {
+  currentFolder = null;
+  document.getElementById('page-title').textContent = 'All Photos';
+  document.getElementById('folders-section').style.display = 'block';
+  updateBreadcrumb();
+  updateSidebarActive(null);
+  loadAll();
+}
+
+function navigateFolder(folderName) {
+  currentFolder = folderName;
+  document.getElementById('page-title').textContent = folderName;
+  document.getElementById('folders-section').style.display = 'none';
+  updateBreadcrumb();
+  updateSidebarActive(folderName);
+  loadImages();
+}
+
+function updateBreadcrumb() {
+  const bc = document.getElementById('breadcrumb');
+  if (!currentFolder) {
+    bc.innerHTML = '<span class="current">Gallery</span>';
+  } else {
+    bc.innerHTML = `<span onclick="navigateAll()">Gallery</span><span class="sep">›</span><span class="current">${currentFolder}</span>`;
+  }
+}
+
+function updateSidebarActive(folder) {
+  document.getElementById('nav-all').classList.toggle('active', folder === null);
+  document.querySelectorAll('.sidebar-folder-item').forEach(el => {
+    el.classList.toggle('active', el.dataset.folder === folder);
+  });
+}
+
+// ── LOAD DATA ─────────────────────────────────────────────────────
+async function loadAll() {
+  await Promise.all([loadFolders(), loadImages()]);
+}
+
+async function loadFolders() {
+  const { data, error } = await sb.storage.from(BUCKET).list('', { limit: 1000 });
+  if (error) { toast(error.message, 'error'); return; }
+
+  // Folders are items with no extension or are actual directories (metadata.mimetype undefined)
+  allFolders = (data || []).filter(item => !item.metadata || !item.metadata.mimetype);
+
+  renderFolders();
+  renderSidebarFolders();
+}
+
+async function loadImages() {
+  const prefix = currentFolder ? currentFolder + '/' : '';
+  const { data, error } = await sb.storage.from(BUCKET).list(prefix, { limit: 500, sortBy: { column: 'created_at', order: 'desc' } });
+  if (error) { toast(error.message, 'error'); return; }
+
+  // Only actual image files
+  allImages = (data || []).filter(item => item.metadata && item.metadata.mimetype && item.metadata.mimetype.startsWith('image/'));
+
+  renderImages();
+}
+
+// ── RENDER FOLDERS ────────────────────────────────────────────────
+function renderFolders() {
+  const grid = document.getElementById('folders-grid');
+
+  if (!allFolders.length) {
+    grid.innerHTML = '<p style="color:var(--muted);font-size:0.85rem;grid-column:1/-1;">No folders yet. Create one!</p>';
+    return;
+  }
+
+  grid.innerHTML = allFolders.map(f => `
+    <div class="folder-card" onclick="navigateFolder('${escHtml(f.name)}')">
+      <button class="folder-delete" onclick="event.stopPropagation(); deleteFolder('${escHtml(f.name)}')" title="Delete folder">✕</button>
+      <div class="folder-icon">
+        <svg width="40" height="40" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M10 4H4c-1.11 0-2 .89-2 2v12c0 1.11.89 2 2 2h16c1.11 0 2-.89 2-2V8c0-1.11-.89-2-2-2h-8l-2-2z"/>
+        </svg>
+      </div>
+      <div class="folder-name">${escHtml(f.name)}</div>
+    </div>
+  `).join('');
+}
+
+function renderSidebarFolders() {
+  const container = document.getElementById('sidebar-folders');
+  container.innerHTML = allFolders.map(f => `
+    <button class="sidebar-folder-item ${currentFolder === f.name ? 'active' : ''}"
+      data-folder="${escHtml(f.name)}"
+      onclick="navigateFolder('${escHtml(f.name)}')">
+      <svg width="14" height="14" fill="currentColor" viewBox="0 0 24 24">
+        <path d="M10 4H4c-1.11 0-2 .89-2 2v12c0 1.11.89 2 2 2h16c1.11 0 2-.89 2-2V8c0-1.11-.89-2-2-2h-8l-2-2z"/>
+      </svg>
+      ${escHtml(f.name)}
+    </button>
+  `).join('');
+}
+
+// ── RENDER IMAGES ─────────────────────────────────────────────────
+function renderImages() {
+  const grid = document.getElementById('images-grid');
+  grid.className = 'images-grid' + (viewMode === 'list' ? ' list-view' : '');
+
+  if (!allImages.length) {
+    grid.innerHTML = `<div class="empty-state" style="grid-column:1/-1;">
+      <svg width="48" height="48" fill="none" stroke="currentColor" stroke-width="1" viewBox="0 0 24 24">
+        <rect x="3" y="3" width="18" height="18" rx="2"/>
+        <circle cx="8.5" cy="8.5" r="1.5"/>
+        <polyline points="21 15 16 10 5 21"/>
+      </svg>
+      <p>No photos here yet. Upload some!</p>
+    </div>`;
+    return;
+  }
+
+  grid.innerHTML = allImages.map((img, i) => {
+    const prefix = currentFolder ? currentFolder + '/' : '';
+    const { data: { publicUrl } } = sb.storage.from(BUCKET).getPublicUrl(prefix + img.name);
+    const dateStr = img.created_at ? formatDate(img.created_at) : '';
+
+    if (viewMode === 'list') {
+      return `<div class="image-card">
+        <img class="image-thumb" src="${publicUrl}" alt="${escHtml(img.name)}" loading="lazy">
+        <div class="image-info">
+          <div class="image-name">${escHtml(img.name)}</div>
+          <div class="image-date">${dateStr}</div>
+        </div>
+        <button class="list-delete" onclick="deleteImage('${escHtml(img.name)}')" title="Delete">
+          <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/>
+            <path d="M10 11v6"/><path d="M14 11v6"/>
+            <path d="M9 6V4h6v2"/>
+          </svg>
+        </button>
+      </div>`;
+    }
+
+    return `<div class="image-card">
+      <img class="image-thumb" src="${publicUrl}" alt="${escHtml(img.name)}" loading="lazy">
+      <div class="image-overlay">
+        <button class="img-action" onclick="openLightbox('${publicUrl}', '${escHtml(img.name)}', '${dateStr}')" title="View">
+          <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+            <circle cx="12" cy="12" r="3"/>
+          </svg>
+        </button>
+        <button class="img-action" onclick="downloadImage('${publicUrl}', '${escHtml(img.name)}')" title="Download">
+          <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+            <polyline points="7 10 12 15 17 10"/>
+            <line x1="12" y1="15" x2="12" y2="3"/>
+          </svg>
+        </button>
+        <button class="img-action delete" onclick="deleteImage('${escHtml(img.name)}')" title="Delete">
+          <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/>
+          </svg>
+        </button>
+      </div>
+      <div class="image-info">
+        <div class="image-name">${escHtml(img.name)}</div>
+        <div class="image-date">${dateStr}</div>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+// ── UPLOAD ────────────────────────────────────────────────────────
+function handleDragOver(e) {
+  e.preventDefault();
+  document.getElementById('upload-zone').classList.add('drag-over');
+}
+
+function handleDragLeave(e) {
+  document.getElementById('upload-zone').classList.remove('drag-over');
+}
+
+function handleDrop(e) {
+  e.preventDefault();
+  document.getElementById('upload-zone').classList.remove('drag-over');
+  const files = Array.from(e.dataTransfer.files).filter(f => f.type.startsWith('image/'));
+  if (files.length) uploadFiles(files);
+}
+
+function handleFileSelect(e) {
+  const files = Array.from(e.target.files);
+  if (files.length) uploadFiles(files);
+  e.target.value = '';
+}
+
+async function uploadFiles(files) {
+  const queue = document.getElementById('upload-queue');
+
+  for (const file of files) {
+    const itemId = 'upl-' + Date.now() + '-' + Math.random().toString(36).slice(2);
+    const itemEl = document.createElement('div');
+    itemEl.className = 'upload-item';
+    itemEl.id = itemId;
+    itemEl.innerHTML = `
+      <span class="upload-item-name">${escHtml(file.name)}</span>
+      <div class="upload-item-progress"><div class="upload-item-bar" id="${itemId}-bar" style="width:0%"></div></div>
+      <span class="upload-item-status" id="${itemId}-status">Uploading…</span>
+    `;
+    queue.appendChild(itemEl);
+
+    const prefix = currentFolder ? currentFolder + '/' : '';
+    const fileName = prefix + Date.now() + '_' + file.name.replace(/\s+/g, '_');
+
+    // Fake progress tick
+    let prog = 0;
+    const tick = setInterval(() => {
+      prog = Math.min(prog + Math.random() * 20, 85);
+      const bar = document.getElementById(itemId + '-bar');
+      if (bar) bar.style.width = prog + '%';
+    }, 200);
+
+    const { error } = await sb.storage.from(BUCKET).upload(fileName, file, {
+      cacheControl: '3600',
+      upsert: false
+    });
+
+    clearInterval(tick);
+    const bar = document.getElementById(itemId + '-bar');
+    const status = document.getElementById(itemId + '-status');
+
+    if (error) {
+      if (bar) bar.style.background = 'var(--red)';
+      if (status) status.textContent = 'Failed';
+      toast('Upload failed: ' + error.message, 'error');
+    } else {
+      if (bar) bar.style.width = '100%';
+      if (status) status.textContent = 'Done ✓';
+      setTimeout(() => { const el = document.getElementById(itemId); if (el) el.remove(); }, 2000);
+    }
+  }
+
+  loadImages();
+}
+
+// ── FOLDERS ───────────────────────────────────────────────────────
+function openFolderModal() {
+  document.getElementById('folder-modal').classList.add('open');
+  document.getElementById('folder-name-input').value = '';
+  setTimeout(() => document.getElementById('folder-name-input').focus(), 100);
+}
+
+function closeFolderModal() {
+  document.getElementById('folder-modal').classList.remove('open');
+}
+
+async function createFolder() {
+  const name = document.getElementById('folder-name-input').value.trim();
+  if (!name) return;
+
+  // Create a placeholder file to "create" the folder in Supabase Storage
+  const placeholder = new Blob([''], { type: 'text/plain' });
+  const { error } = await sb.storage.from(BUCKET).upload(`${name}/.keep`, placeholder, { upsert: true });
+
+  if (error) { toast('Failed to create folder: ' + error.message, 'error'); return; }
+  closeFolderModal();
+  toast('Folder "' + name + '" created!', 'success');
+  await loadFolders();
+}
+
+async function deleteFolder(name) {
+  if (!confirm(`Delete folder "${name}" and all its photos? This cannot be undone.`)) return;
+
+  // List all files in the folder then delete them
+  const { data } = await sb.storage.from(BUCKET).list(name, { limit: 1000 });
+  if (data && data.length) {
+    const paths = data.map(f => name + '/' + f.name);
+    await sb.storage.from(BUCKET).remove(paths);
+  }
+
+  toast('Folder deleted.', 'info');
+  if (currentFolder === name) navigateAll();
+  else await loadFolders();
+}
+
+// ── DELETE IMAGE ──────────────────────────────────────────────────
+async function deleteImage(name) {
+  if (!confirm('Delete this photo?')) return;
+  const prefix = currentFolder ? currentFolder + '/' : '';
+  const { error } = await sb.storage.from(BUCKET).remove([prefix + name]);
+  if (error) { toast('Delete failed: ' + error.message, 'error'); return; }
+  toast('Photo deleted.', 'info');
+  loadImages();
+}
+
+// ── LIGHTBOX ──────────────────────────────────────────────────────
+function openLightbox(url, name, date) {
+  document.getElementById('lightbox-img').src = url;
+  document.getElementById('lightbox-info').textContent = name + (date ? '  ·  ' + date : '');
+  document.getElementById('lightbox').classList.add('open');
+}
+
+function closeLightbox() {
+  document.getElementById('lightbox').classList.remove('open');
+  document.getElementById('lightbox-img').src = '';
+}
+
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeLightbox(); });
+
+// ── DOWNLOAD ──────────────────────────────────────────────────────
+function downloadImage(url, name) {
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = name;
+  a.target = '_blank';
+  a.click();
+}
+
+// ── VIEW ──────────────────────────────────────────────────────────
+function setView(mode) {
+  viewMode = mode;
+  document.getElementById('grid-btn').classList.toggle('active', mode === 'grid');
+  document.getElementById('list-btn').classList.toggle('active', mode === 'list');
+  renderImages();
+}
+
+// ── UTILS ─────────────────────────────────────────────────────────
+function formatDate(isoStr) {
+  try {
+    const d = new Date(isoStr);
+    return d.toLocaleDateString('en-GB', { day:'2-digit', month:'short', year:'numeric' })
+      + ' ' + d.toLocaleTimeString('en-GB', { hour:'2-digit', minute:'2-digit' });
+  } catch { return ''; }
+}
+
+function escHtml(str) {
+  return (str || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');
+}
+
+function toast(msg, type = 'info') {
+  const el = document.createElement('div');
+  el.className = 'toast ' + type;
+  el.textContent = msg;
+  document.getElementById('toast-container').appendChild(el);
+  setTimeout(() => el.remove(), 3500);
+}
+
+function showLoading(show) {
+  document.getElementById('loading-overlay').classList.toggle('show', show);
+}
+
+// ── INIT ──────────────────────────────────────────────────────────
+checkSession();
+</script>
+</body>
+</html>
