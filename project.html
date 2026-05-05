@@ -1,0 +1,645 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Project — Mahdi Hasan</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --bg:     #0a1628;
+      --bg2:    #0d1e36;
+      --card:   #132443;
+      --card2:  #0f1d34;
+      --accent: #3ecfaa;
+      --white:  #ffffff;
+      --gray:   #6f8aaa;
+      --border: #1a2e50;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--white);
+      font-family: 'Outfit', sans-serif;
+      line-height: 1.6;
+      overflow-x: hidden;
+      min-height: 100vh;
+    }
+
+    a { text-decoration: none; color: inherit; }
+
+    /* ── NAV ── */
+    .topnav {
+      max-width: 860px;
+      margin: 0 auto;
+      padding: 20px 24px 0;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      animation: fadeUp .45s cubic-bezier(.22,1,.36,1) both;
+    }
+
+    .back-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--gray);
+      font-size: 14px;
+      font-weight: 600;
+      padding: 8px 16px;
+      border: 1.5px solid var(--border);
+      border-radius: 10px;
+      transition: border-color .2s, color .2s, background .2s;
+    }
+
+    .back-btn:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+      background: rgba(62,207,170,.06);
+    }
+
+    .nav-name { font-size: 13px; font-weight: 700; color: var(--gray); }
+    .nav-name span { color: var(--accent); }
+
+    /* ── STATE MSG ── */
+    .state-msg {
+      max-width: 860px;
+      margin: 80px auto;
+      padding: 0 24px;
+      text-align: center;
+    }
+
+    .state-msg i  { font-size: 52px; color: var(--border); margin-bottom: 16px; }
+    .state-msg h2 { font-size: 24px; font-weight: 700; margin-bottom: 10px; }
+    .state-msg p  { color: var(--gray); font-size: 15px; }
+
+    .all-cards-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      margin-top: 28px;
+      background: var(--accent);
+      color: var(--bg);
+      font-weight: 700;
+      font-size: 14px;
+      padding: 10px 22px;
+      border-radius: 10px;
+      transition: opacity .2s;
+    }
+
+    .all-cards-btn:hover { opacity: .85; }
+
+    /* ── MAIN CONTENT ── */
+    .proj-wrap {
+      max-width: 860px;
+      margin: 0 auto;
+      padding: 36px 24px 60px;
+      animation: fadeUp .5s .05s cubic-bezier(.22,1,.36,1) both;
+    }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(18px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .proj-tag {
+      display: inline-block;
+      background: rgba(62,207,170,.13);
+      color: var(--accent);
+      font-size: 12px;
+      font-weight: 700;
+      padding: 4px 12px;
+      border-radius: 20px;
+      letter-spacing: .5px;
+      margin-bottom: 14px;
+      text-transform: uppercase;
+    }
+
+    .proj-title {
+      font-size: clamp(28px, 7vw, 50px);
+      font-weight: 900;
+      letter-spacing: -1px;
+      line-height: 1.1;
+      margin-bottom: 6px;
+    }
+
+    .proj-title .ac { color: var(--accent); }
+
+    .proj-subtitle {
+      color: var(--gray);
+      font-size: 16px;
+      font-weight: 400;
+      margin-bottom: 32px;
+    }
+
+    .div {
+      border: none;
+      border-top: 1px solid var(--border);
+      margin: 32px 0;
+    }
+
+    /* ── SECTION LABEL ── */
+    .sec-label {
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--accent);
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      margin-bottom: 16px;
+    }
+
+    /* ── VIDEO — MP4 ── */
+    .videos-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 20px;
+    }
+
+    @media (min-width: 640px) {
+      .videos-grid.multi { grid-template-columns: 1fr 1fr; }
+    }
+
+    .video-wrap {
+      width: 100%;
+      border-radius: 14px;
+      overflow: hidden;
+      background: #000;
+    }
+
+    .video-wrap video {
+      width: 100%;
+      display: block;
+      border-radius: 14px;
+      /* keep native controls so user can play/pause/seek */
+    }
+
+    .video-placeholder {
+      width: 100%;
+      padding: 48px 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      color: var(--gray);
+      font-size: 13px;
+      text-align: center;
+      background: linear-gradient(135deg,#0f1d34,#162840);
+      border: 1.5px dashed var(--border);
+      border-radius: 14px;
+    }
+
+    .video-placeholder i { font-size: 36px; color: var(--border); }
+
+    /* ── DESCRIPTION ── */
+    .desc-block {
+      background: var(--card);
+      border: 1.5px solid var(--border);
+      border-radius: 16px;
+      padding: 28px 24px;
+    }
+
+    .desc-block p {
+      color: #b0c4de;
+      font-size: 15px;
+      line-height: 1.9;
+      margin-bottom: 14px;
+    }
+
+    .desc-block p:last-child { margin-bottom: 0; }
+
+    /* ── IMAGES GALLERY ── */
+    .img-grid {
+      display: grid;
+      gap: 14px;
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    @media (min-width: 600px) {
+      .img-grid { grid-template-columns: repeat(3, 1fr); }
+    }
+
+    .img-grid img {
+      width: 100%;
+      aspect-ratio: 4/3;
+      object-fit: cover;
+      border-radius: 12px;
+      display: block;
+      transition: transform .25s, box-shadow .25s;
+      cursor: zoom-in;
+    }
+
+    .img-grid img:hover {
+      transform: scale(1.04);
+      box-shadow: 0 10px 40px rgba(0,0,0,.5);
+    }
+
+    /* ── CHIPS ── */
+    .chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 20px;
+    }
+
+    .chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      background: var(--card);
+      border: 1.5px solid var(--border);
+      border-radius: 8px;
+      padding: 7px 14px;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--gray);
+    }
+
+    .chip i { color: var(--accent); }
+
+    /* ── LIGHTBOX ── */
+    .lightbox {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,.92);
+      z-index: 1000;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    .lightbox.open { display: flex; }
+
+    .lightbox img {
+      max-width: 100%;
+      max-height: 90vh;
+      border-radius: 12px;
+      object-fit: contain;
+    }
+
+    .lb-close {
+      position: fixed;
+      top: 20px; right: 24px;
+      font-size: 28px; color: #fff;
+      cursor: pointer; z-index: 1001;
+      background: rgba(0,0,0,.5);
+      width: 40px; height: 40px;
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+    }
+
+    /* ── FOOTER ── */
+    .proj-footer {
+      max-width: 860px;
+      margin: 0 auto;
+      padding: 0 24px 48px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    .contact-link {
+      color: var(--gray);
+      font-size: 13px;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      transition: color .2s;
+    }
+
+    .contact-link:hover { color: var(--accent); }
+
+    @media (max-width: 400px) {
+      .proj-wrap { padding: 24px 16px 50px; }
+      .proj-footer { padding-left: 16px; padding-right: 16px; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { animation-duration:.01ms !important; transition-duration:.01ms !important; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ── NAV ── -->
+<nav class="topnav">
+  <a class="back-btn" href="index.html">
+    <i class="fas fa-arrow-left"></i> Back
+  </a>
+  <span class="nav-name"><span>Mahdi</span> Hasan</span>
+</nav>
+
+<div id="root"></div>
+
+<!-- ── LIGHTBOX ── -->
+<div class="lightbox" id="lightbox">
+  <div class="lb-close" onclick="closeLB()"><i class="fas fa-times"></i></div>
+  <img id="lb-img" src="" alt="Full image" />
+</div>
+
+<script>
+/* ═══════════════════════════════════════════════════
+   PROJECT DATA
+
+   videos : Array of MP4 filenames  e.g. ['demo.mp4', 'build.mp4']
+            Leave empty [] if no video yet.
+   images : Array of image filenames e.g. ['photo1.jpg', 'photo2.jpg']
+            Leave empty [] — section will be hidden automatically.
+   chips  : Small info tags.
+═══════════════════════════════════════════════════ */
+
+const PROJECTS = {
+
+  'greenhouse': {
+    tag: 'Agriculture', 
+    titleWord: 'Smart',
+    titleRest: ' Greenhouse',
+    subtitle: 'Automated plant monitoring & care system',
+    description: [
+      'A smart greenhouse using sensors, solar tracking, and a custom-built circuit board to optimize water, energy, and crop conditions with remote monitoring',
+      ],
+    videos: ['assets/Green House - Mahdi Hasan.mp4'],   // e.g. ['assets/greenhouse-demo.mp4']
+    images: [],   // e.g. ['assets/greenhouse1.jpg', 'assets/greenhouse2.jpg']
+    
+  },
+
+  'hologram': {
+    tag: 'Three Dimensonal', 
+    titleWord: 'Hologram',
+    titleRest: ' Mat',
+    subtitle: 'DIY floating holographic display projection',
+    description: [
+      'A smart system that uses camera hand tracking and projection to interact with virtual objects and capture real time measurements.'
+    ],
+    videos: ['assets/Hologram Mat - Mahdi Hasan.mp4'],
+    images: [],
+    
+  },
+
+  'robotic-arm': {
+    tag: 'Motor Arm', 
+    titleWord: 'Robotic',
+    titleRest: ' Arm',
+    subtitle: 'Mechanical arm',
+    description: [
+      'A mechanical arm that can move, grab, and perform tasks like a human arm.'
+    ],
+    videos: ['assets/Robotic Arm - Mahdi Hasan.mp4'],
+    images: [],
+    
+  },
+
+  'stabilized-spoon': {
+    tag: 'Medical', 
+    titleWord: 'Stabilized',
+    titleRest: ' Spoon',
+    subtitle: 'Gyroscope-based ',
+    description: [
+      'The Stabilized Spoon is an assistive device designed to help people with hand tremors (like those caused by Parkinson\'s disease) eat without spilling. It uses gyroscopes and servo motors to counteract unwanted hand movements and keep the spoon level.',
+    
+    ],
+    videos: ['assets/Stabilized Spoon - Mahdi Hasan.mp4'],
+    images: [],
+    
+  },
+
+  'avoider-robot': {
+    tag: 'Simple Robot', 
+    titleWord: 'Avoider',
+    titleRest: ' Robot',
+    subtitle: 'Autonomous obstacle-detecting wheeled robot',
+    description: [
+      'The Avoider Robot is a self-navigating robot that detects obstacles in its path and steers around them automatically using  sensors. It requires no human input during operation.',
+      
+    ],
+    videos: ['assets/Obstacle Avoider Robot - Mahdi Hasan.mp4'],
+    images: [],
+    
+  },
+
+  'augmented-reality': {
+    tag: 'AR Software', 
+    titleWord: 'Augmented',
+    titleRest: ' Reality',
+    subtitle: 'AR experience with  visuals',
+    description: [
+      'This Augmented Reality project overlays digital content onto the real world using a camera and marker recognition. Pointing a device\'s camera at a printed marker triggers a 3-D model or animation to appear on screen.',
+    ],
+    videos: ['assets/Augmented Reality - Mahdi Hasan.mp4'],
+    images: [],
+    
+  },
+
+  'pixel-box': {
+    tag: 'Led Display',
+    titleWord: 'Pixel',
+    titleRest: ' Box',
+    subtitle: 'LED matrix display in a compact enclosure',
+    description: [
+      'The Pixel Box is a compact LED matrix display housed in a custom-built enclosure. It can display animations, text scrolling, and patterns — essentially a tiny programmable screen made of individually controllable  LEDs.',
+      
+      'This project was a great exercise in both hardware and creative programming.'
+    ],
+    videos: ['assets/PixelBox - Mahdi Hasan.mp4'],
+    images: [],
+    
+  },
+
+  'rocket-visualization': {
+    tag: 'Simulation',
+    titleWord: 'Rocket',
+    titleRest: ' Visualization',
+    subtitle: 'Interactive rocket simulator',
+    description: [
+      'The Rocket Visualization project is a real-time simulation that models rocket flight physics. It displays rocket model with Yaw (vertical), Pitch (lateral), and Roll (longitudinal).',
+      'This project grew from my fascination with space exploration and helped me understand the mathematics behind it at a beginner level.'
+    ],
+    videos: ['assets/Rocket Visualization - Mahdi Hasan.mp4'],
+    images: [],
+   /* chips: [
+      { icon: 'fa-rocket',     label: 'Physics Simulation' },
+      { icon: 'fa-chart-line', label: 'Real-time Graphs' },
+      { icon: 'fa-code',       label: 'Python / JS' }
+    ]*/
+  }
+
+};
+
+/* ══════════════════════════
+   HELPERS
+══════════════════════════ */
+function esc(str) {
+  return String(str)
+    .replace(/&/g,'&amp;')
+    .replace(/</g,'&lt;')
+    .replace(/>/g,'&gt;')
+    .replace(/"/g,'&quot;');
+}
+
+/* Videos — MP4 only, hidden if empty */
+function buildVideoHTML(videos) {
+  if (!videos || videos.length === 0) {
+    return `
+      <div class="video-placeholder">
+        <i class="fas fa-video-slash"></i>
+        <span>No video available yet.<br>
+        Add MP4 filenames to the <code>videos</code> array in project.html</span>
+      </div>`;
+  }
+  const cls = videos.length > 1 ? 'videos-grid multi' : 'videos-grid';
+  return `<div class="${cls}">` + videos.map(src => `
+    <div class="video-wrap">
+      <video controls preload="metadata">
+        <source src="${esc(src)}" type="video/mp4" />
+        Your browser does not support the video tag.
+      </video>
+    </div>`).join('') + '</div>';
+}
+
+/* Images — hidden entirely if empty */
+function buildImagesHTML(imgs) {
+  if (!imgs || imgs.length === 0) return ''; // nothing rendered
+  return `<div class="img-grid">` + imgs.map(src => `
+    <img src="${esc(src)}" alt="" loading="lazy" onclick="openLB('${esc(src)}')" />`
+  ).join('') + `</div>`;
+}
+
+/* Chips */
+function buildChipsHTML(chips) {
+  if (!chips || chips.length === 0) return '';
+  return `<div class="chips">` + chips.map(c => `
+    <div class="chip"><i class="fas ${esc(c.icon)}"></i> ${esc(c.label)}</div>`
+  ).join('') + `</div>`;
+}
+
+/* ══════════════════════════
+   RENDER
+══════════════════════════ */
+function render() {
+  const id   = new URLSearchParams(window.location.search).get('id') || '';
+  const proj = PROJECTS[id];
+  const root = document.getElementById('root');
+
+  if (!proj) {
+    root.innerHTML = `
+      <div class="state-msg">
+        <i class="fas fa-folder-open"></i>
+        <h2>Project not found</h2>
+        <p>The project "<strong>${esc(id)}</strong>" doesn't exist yet.</p>
+        <a class="all-cards-btn" href="index.html">
+          <i class="fas fa-arrow-left"></i> Back to all projects
+        </a>
+      </div>`;
+    document.title = 'Not Found — Mahdi Hasan';
+    return;
+  }
+
+  document.title = `${proj.titleWord}${proj.titleRest} — Mahdi Hasan`;
+
+  const imagesHTML  = buildImagesHTML(proj.images);
+  // Only show photos section if there are images
+  const photoSection = imagesHTML ? `
+      <hr class="div" />
+      <p class="sec-label"><i class="fas fa-images" style="margin-right:6px;"></i>Photos</p>
+      ${imagesHTML}` : '';
+
+  root.innerHTML = `
+    <div class="proj-wrap">
+
+      <div class="proj-tag">${esc(proj.tag)}</div>
+      <h1 class="proj-title"><span class="ac">${esc(proj.titleWord)}</span>${esc(proj.titleRest)}</h1>
+      <p class="proj-subtitle">${esc(proj.subtitle)}</p>
+
+      ${buildChipsHTML(proj.chips)}
+
+      <hr class="div" />
+
+      <p class="sec-label"><i class="fas fa-play-circle" style="margin-right:6px;"></i>Demo Video</p>
+      ${buildVideoHTML(proj.videos)}
+
+      <hr class="div" />
+
+      <p class="sec-label"><i class="fas fa-align-left" style="margin-right:6px;"></i>About This Project</p>
+      <div class="desc-block">
+        ${(proj.description || []).map(p => `<p>${esc(p)}</p>`).join('')}
+      </div>
+
+      ${photoSection}
+
+    </div>
+
+    <footer class="proj-footer">
+      <a class="back-btn" href="index.html">
+        <i class="fas fa-arrow-left"></i> All Projects
+      </a>
+      <a class="contact-link" href="mailto:mahdihasan3620tics@gmail.com">
+        <i class="fas fa-envelope"></i> mahdihasan3620tics@gmail.com
+      </a>
+    </footer>
+  `;
+}
+
+/* ── Lightbox ── */
+function openLB(src) {
+  document.getElementById('lb-img').src = src;
+  document.getElementById('lightbox').classList.add('open');
+}
+
+function closeLB() {
+  document.getElementById('lightbox').classList.remove('open');
+  document.getElementById('lb-img').src = '';
+}
+
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeLB(); });
+document.getElementById('lightbox').addEventListener('click', function(e) {
+  if (e.target === this) closeLB();
+});
+
+render();
+</script>
+
+<script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "ProfilePage",
+    "mainEntity": {
+      "@type": "Person",
+  "name": "Mahdi Hasan",
+  "jobTitle": "Inventor",
+  "description": "Young inventor building electronics and robotics projects",
+  "knowsAbout": ["Robotics", "Electronics", "Engineering", "Idea Developer"],
+  "alternateName": "mahdihasan1_",
+      "image": "https://mahdihasan.site/assets/Mahdi_Hasan.png",
+      "sameAs": [
+        "https://instagram.com/mahdihasan1_",
+        "https://www.youtube.com/channel/UCLVRxJpKESQuFisWJrJysqg",
+        "https://x.com/mahdihasan1_",
+        "https://www.linkedin.com/in/mahdi-hasan-72b0a93a3/",
+        "https://mahdihasan.site/"
+      ]
+    }
+  }
+  </script>
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "name": "Mahdi Hasan",
+    "alternateName": "mahdihasan1_",
+    "url": "https://mahdihasan.site/"
+  }
+  </script>
+
+</body>
+</html>
