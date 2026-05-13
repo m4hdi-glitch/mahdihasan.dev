@@ -22,7 +22,6 @@
   .cover-table td.num { text-align: center; width: 36px; }
   .pdf-btn { display: inline-block; background: #c0392b; color: #fff; font-size: 10px; padding: 3px 7px; border-radius: 3px; text-decoration: none; margin: 1px; cursor: pointer; }
 
-  /* Secret tap zones */
   .secret-zone { width: 100%; height: 30px; cursor: default; user-select: none; }
   .zone-red { background: #e74c3c; }
   .zone-green { background: #27ae60; }
@@ -42,7 +41,6 @@
   .user-avatar.gray { background: #94a3b8; }
   .exit-btn { background: #1e3a5f; color: #fff; border: none; border-radius: 6px; padding: 10px 24px; font-size: 13px; font-weight: 600; cursor: pointer; margin-top: 16px; letter-spacing: 1px; display: flex; align-items: center; gap: 6px; }
 
-  /* User password modal */
   #user-pw-modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.7); z-index: 2000; align-items: center; justify-content: center; }
   .upw-box { background: #fff; border-radius: 14px; padding: 28px; max-width: 300px; width: 90%; text-align: center; }
   .upw-box h3 { margin-bottom: 16px; color: #1e293b; }
@@ -51,7 +49,6 @@
   #upw-error { color: #ef4444; font-size: 12px; margin-top: 8px; min-height: 14px; }
   #upw-loading { color: #64748b; font-size: 12px; margin-top: 4px; min-height: 14px; }
 
-  /* Change password modal */
   #change-pw-modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.7); z-index: 3000; align-items: center; justify-content: center; }
   .cpw-box { background: #fff; border-radius: 14px; padding: 28px; max-width: 310px; width: 90%; text-align: center; }
   .cpw-box h3 { margin-bottom: 6px; color: #1e293b; }
@@ -105,25 +102,34 @@
   .msg-row.theirs .msg-file { background: #f1f5f9; color: #1e293b; }
   .sender-name { font-size: 11px; color: #64748b; margin-bottom: 2px; font-weight: 600; }
 
-  /* Hold-to-unsend context menu */
+  /* Typing dots animation */
+  .typing-dots { display: inline-flex; gap: 3px; align-items: center; margin-left: 4px; }
+  .typing-dots span { width: 5px; height: 5px; border-radius: 50%; background: #27ae60; animation: typingBounce 1.2s infinite; }
+  .typing-dots span:nth-child(2) { animation-delay: 0.2s; }
+  .typing-dots span:nth-child(3) { animation-delay: 0.4s; }
+  @keyframes typingBounce { 0%,60%,100% { transform: translateY(0); opacity: 0.4; } 30% { transform: translateY(-4px); opacity: 1; } }
+
+  /* Connection status indicator */
+  #conn-status { position: fixed; top: 8px; right: 8px; width: 10px; height: 10px; border-radius: 50%; background: #f87171; z-index: 9999; transition: background 0.5s; }
+  #conn-status.connected { background: #4ade80; }
+  #conn-status.connecting { background: #fbbf24; animation: pulse 1s infinite; }
+  @keyframes pulse { 0%,100% { opacity:1; } 50% { opacity:0.4; } }
+
   #ctx-menu { display: none; position: fixed; z-index: 9000; background: #1e293b; border-radius: 10px; box-shadow: 0 8px 30px rgba(0,0,0,0.3); overflow: hidden; min-width: 150px; }
   #ctx-menu button { display: flex; align-items: center; gap: 10px; width: 100%; padding: 12px 16px; background: none; border: none; color: #f1f5f9; font-size: 14px; cursor: pointer; transition: background 0.1s; text-align: left; }
   #ctx-menu button:hover { background: #334155; }
   #ctx-menu button.danger { color: #f87171; }
   #ctx-menu .ctx-divider { height: 1px; background: #334155; }
 
-  /* Input area */
-  .typing-indicator { padding: 4px 16px; font-size: 11px; color: #94a3b8; height: 20px; }
+  .typing-indicator { padding: 4px 16px; font-size: 11px; color: #27ae60; height: 22px; display: flex; align-items: center; }
   .input-area { display: flex; align-items: center; gap: 8px; padding: 10px 12px; background: #fff; border-top: 1px solid #e2e8f0; }
   .input-area input[type=text] { flex: 1; border: 1.5px solid #cbd5e1; border-radius: 20px; padding: 9px 16px; font-size: 14px; outline: none; }
   .input-area input[type=text]:focus { border-color: #1e3a5f; }
   .attach-btn, .send-btn { background: none; border: none; cursor: pointer; padding: 4px; display: flex; align-items: center; }
   #file-input { display: none; }
 
-  /* Settings button */
   .settings-btn { background: none; border: none; cursor: pointer; padding: 4px; display: flex; align-items: center; margin-left: auto; }
 
-  /* Media */
   .media-section { margin-bottom: 20px; }
   .media-section h3 { font-size: 13px; color: #64748b; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 10px; padding-bottom: 6px; border-bottom: 1px solid #e2e8f0; }
   .media-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; }
@@ -134,27 +140,25 @@
   .starred-msg-item .sm-text { font-size: 14px; color: #1e293b; }
   .starred-msg-item .sm-time { font-size: 10px; color: #94a3b8; margin-top: 3px; }
 
-  /* Notifications */
   .notif-toast { position: fixed; top: 16px; left: 50%; transform: translateX(-50%); background: #1e293b; color: #fff; padding: 10px 20px; border-radius: 20px; font-size: 13px; z-index: 9999; opacity: 0; transition: opacity 0.3s; pointer-events: none; max-width: 320px; text-align: center; }
   .notif-toast.show { opacity: 1; }
 
   .hidden { display: none !important; }
   .flex { display: flex !important; }
 
-  /* Bottom bar */
   .bottom-bar { padding: 8px 16px 12px; border-top: 1px solid #e2e8f0; background: #fff; }
 
-  /* Notif permission banner */
   #notif-banner { display: none; background: #fef3c7; border: 1px solid #f59e0b; border-radius: 8px; margin: 8px 12px; padding: 10px 14px; font-size: 12px; color: #92400e; align-items: center; gap: 8px; }
   #notif-banner button { background: #f59e0b; color: #fff; border: none; border-radius: 6px; padding: 4px 10px; cursor: pointer; font-size: 11px; white-space: nowrap; }
 </style>
 </head>
 <body>
 
-<!-- NOTIFICATION TOAST -->
+<!-- Connection status dot (green = connected, yellow = connecting, red = disconnected) -->
+<div id="conn-status" title="Realtime connection status"></div>
+
 <div class="notif-toast" id="notif-toast"></div>
 
-<!-- Context menu for hold-to-unsend -->
 <div id="ctx-menu">
   <button id="ctx-star" onclick="ctxStar()">
     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
@@ -193,7 +197,6 @@
     </tbody>
   </table>
 
-  <!-- Secret tap zones: red × 2 → green × 2 -->
   <div class="secret-zone zone-red" id="zone-red-1" style="margin-top:18px;"></div>
   <div class="secret-zone zone-green" id="zone-green-1" style="margin-top:4px;"></div>
   <div class="secret-zone zone-red" id="zone-red-2" style="margin-top:4px;"></div>
@@ -202,7 +205,6 @@
 <!-- ===== MAIN APP ===== -->
 <div id="app">
 
-  <!-- LOGIN PAGE -->
   <div id="login-page">
     <h1>Log in</h1>
     <button class="user-btn" onclick="selectUser('Abu Bakoar','black')">
@@ -231,7 +233,6 @@
     </button>
   </div>
 
-  <!-- CHAT LIST PAGE -->
   <div id="chat-list-page">
     <div class="chat-header">
       <div class="avatar-sm" id="cl-user-avatar">
@@ -263,7 +264,6 @@
     </div>
   </div>
 
-  <!-- CHAT ROOM -->
   <div id="chat-room">
     <div class="room-header">
       <button class="back-btn" onclick="backToChatList()">
@@ -284,6 +284,7 @@
       </div>
     </div>
     <div class="messages-area" id="messages-area"></div>
+    <!-- Typing indicator with animated dots -->
     <div class="typing-indicator" id="typing-indicator"></div>
     <div class="input-area">
       <button class="attach-btn" onclick="document.getElementById('file-input').click()">
@@ -305,7 +306,6 @@
 
 </div>
 
-<!-- USER PASSWORD MODAL -->
 <div id="user-pw-modal">
   <div class="upw-box">
     <h3 id="upw-title">Enter Password</h3>
@@ -320,7 +320,6 @@
   </div>
 </div>
 
-<!-- CHANGE PASSWORD MODAL -->
 <div id="change-pw-modal">
   <div class="cpw-box">
     <h3>Change Password</h3>
@@ -344,11 +343,6 @@ const SUPABASE_URL = 'https://gnubxjjoyqbxtfzhdrmz.supabase.co';
 const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImdudWJ4ampveXFieHRmemhkcm16Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzg2ODcwNDksImV4cCI6MjA5NDI2MzA0OX0.ex9kouY-asfdT2v48Sh3lWHiFGSdPHeGD7yHH_y2zaQ';
 const MESSAGE_EXPIRY_DAYS = 4;
 
-// ── User → Supabase Auth email mapping ──────────────────────
-// Each "username" maps to a fake email used with Supabase Auth.
-// Default passwords: Abu Bakoar=1111, Mahdi Hasan=2222,
-//   Sayhan Kabir=3333, Howladar=4444, Guest=0000
-// Passwords are stored ONLY in Supabase Auth — never in localStorage.
 const USER_EMAILS = {
   'Abu Bakoar':   'abu_bakoar@chatapp.local',
   'Mahdi Hasan':  'mahdi_hasan@chatapp.local',
@@ -370,7 +364,7 @@ const USER_COLORS = {
 // ============================================================
 const sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
   auth: {
-    persistSession: true,      // keeps session across reloads
+    persistSession: true,
     autoRefreshToken: true,
     detectSessionInUrl: false
   },
@@ -380,23 +374,71 @@ const sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
 });
 
 // ============================================================
-// STATE
+// AUDIO — single shared AudioContext (created on first user gesture)
 // ============================================================
-let tapSequence = [];
-let currentUser = null;          // display name
-let currentUserEmail = null;
-let currentChatPartner = null;
-let currentChatType = 'dm';
-let realtimeChannel = null;
-let typingTimeout = null;
-let ctxMsgId = null;
-let ctxMsgMine = false;
-let holdTimer = null;
-let swRegistration = null;
-let renderedMsgIds = new Set();  // prevent duplicate renders
+let audioCtx = null;
+
+function ensureAudioCtx() {
+  if (!audioCtx) {
+    audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+  }
+  // Resume if suspended (browsers suspend after inactivity)
+  if (audioCtx.state === 'suspended') {
+    audioCtx.resume();
+  }
+}
+
+// Warm up AudioContext on first tap/click anywhere
+document.addEventListener('click', ensureAudioCtx, { once: true });
+document.addEventListener('touchstart', ensureAudioCtx, { once: true });
+
+function playNotif() {
+  try {
+    ensureAudioCtx();
+    const osc  = audioCtx.createOscillator();
+    const gain = audioCtx.createGain();
+    osc.connect(gain);
+    gain.connect(audioCtx.destination);
+    osc.frequency.setValueAtTime(880, audioCtx.currentTime);
+    osc.frequency.setValueAtTime(660, audioCtx.currentTime + 0.1);
+    gain.gain.setValueAtTime(0.3, audioCtx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.3);
+    osc.start(audioCtx.currentTime);
+    osc.stop(audioCtx.currentTime + 0.3);
+  } catch(e) { console.warn('Audio error:', e); }
+}
 
 // ============================================================
-// SERVICE WORKER REGISTRATION (push notifications)
+// STATE
+// ============================================================
+let tapSequence       = [];
+let currentUser       = null;
+let currentUserEmail  = null;
+let currentChatPartner = null;
+let currentChatType   = 'dm';
+let realtimeChannel   = null;
+let typingTimeout     = null;    // clears typing indicator
+let typingThrottle    = null;    // throttle broadcast
+let ctxMsgId          = null;
+let ctxMsgMine        = false;
+let holdTimer         = null;
+let swRegistration    = null;
+let renderedMsgIds    = new Set();
+let isSubscribed      = false;   // ← true only after channel confirms SUBSCRIBED
+
+// ============================================================
+// CONNECTION STATUS DOT
+// ============================================================
+function setConnStatus(state) {
+  // state: 'connecting' | 'connected' | 'disconnected'
+  const el = document.getElementById('conn-status');
+  el.className = state;
+  el.title = 'Realtime: ' + state;
+}
+setConnStatus('disconnected');
+
+// ============================================================
+// SERVICE WORKER
 // ============================================================
 const SW_SCRIPT = `
 self.addEventListener('push', e => {
@@ -423,8 +465,7 @@ async function registerSW() {
   if (!('serviceWorker' in navigator)) return;
   try {
     const blob = new Blob([SW_SCRIPT], { type: 'application/javascript' });
-    const swUrl = URL.createObjectURL(blob);
-    swRegistration = await navigator.serviceWorker.register(swUrl, { scope: './' });
+    swRegistration = await navigator.serviceWorker.register(URL.createObjectURL(blob), { scope: './' });
   } catch(e) { console.warn('SW reg failed:', e); }
 }
 
@@ -445,7 +486,7 @@ function showNotifBannerIfNeeded() {
 function fireNotification(title, body) {
   if (!('Notification' in window)) return;
   if (Notification.permission !== 'granted') return;
-  if (document.visibilityState === 'visible') return; // only when tab hidden
+  if (document.visibilityState === 'visible') return;
   if (swRegistration) {
     swRegistration.showNotification(title, { body, tag: 'chat-msg', renotify: true });
   } else {
@@ -454,13 +495,12 @@ function fireNotification(title, body) {
 }
 
 // ============================================================
-// INIT — Check for existing Supabase Auth session
+// INIT
 // ============================================================
 window.addEventListener('DOMContentLoaded', async () => {
   await registerSW();
   setupSecretZones();
 
-  // Check for existing auth session (survives reload)
   const { data: { session } } = await sb.auth.getSession();
   if (session) {
     const email = session.user.email;
@@ -472,12 +512,8 @@ window.addEventListener('DOMContentLoaded', async () => {
       document.getElementById('app').style.display = 'flex';
       document.getElementById('app').style.flexDirection = 'column';
       showChatList();
-      return;
     }
   }
-
-  // No session — check if we were mid-flow and cover was hidden
-  // (e.g., user reloaded while app was open but session expired)
 });
 
 // ============================================================
@@ -508,7 +544,7 @@ function unlockApp() {
 }
 
 // ============================================================
-// LOGIN — uses Supabase Auth
+// LOGIN
 // ============================================================
 function showLoginPage() {
   hideAllPages();
@@ -536,13 +572,9 @@ async function checkUserPw() {
   document.getElementById('upw-error').textContent = '';
 
   const { data, error } = await sb.auth.signInWithPassword({ email, password: pw });
-
   document.getElementById('upw-loading').textContent = '';
 
-  if (error) {
-    document.getElementById('upw-error').textContent = 'Wrong password.';
-    return;
-  }
+  if (error) { document.getElementById('upw-error').textContent = 'Wrong password.'; return; }
 
   currentUser = selectedUserName;
   currentUserEmail = email;
@@ -552,7 +584,7 @@ async function checkUserPw() {
 
 async function logOut() {
   await sb.auth.signOut();
-  if (realtimeChannel) { realtimeChannel.unsubscribe(); realtimeChannel = null; }
+  cleanupChannel();
   currentUser = null;
   currentUserEmail = null;
   currentChatPartner = null;
@@ -560,19 +592,20 @@ async function logOut() {
   hideAllPages();
   document.getElementById('app').style.display = 'none';
   document.getElementById('cover-page').style.display = 'block';
+  setConnStatus('disconnected');
   tapSequence = [];
 }
 
 function exitToMain() {
-  // Keeps Supabase session alive — just hides UI
-  if (realtimeChannel) { realtimeChannel.unsubscribe(); realtimeChannel = null; }
+  cleanupChannel();
   hideAllPages();
   document.getElementById('app').style.display = 'none';
   document.getElementById('cover-page').style.display = 'block';
+  setConnStatus('disconnected');
 }
 
 // ============================================================
-// CHANGE PASSWORD — uses Supabase Auth updateUser
+// CHANGE PASSWORD
 // ============================================================
 function openChangePw() {
   document.getElementById('cpw-username').textContent = currentUser;
@@ -591,12 +624,12 @@ async function saveNewPassword() {
   errEl.textContent = ''; okEl.textContent = '';
 
   if (!newPw || !confirm) { errEl.textContent = 'Fill all fields.'; return; }
-  if (newPw.length < 6) { errEl.textContent = 'New password must be at least 6 characters.'; return; }
+  if (newPw.length < 6) { errEl.textContent = 'Min 6 characters.'; return; }
   if (newPw !== confirm) { errEl.textContent = 'Passwords do not match.'; return; }
 
   const { error } = await sb.auth.updateUser({ password: newPw });
   if (error) { errEl.textContent = 'Error: ' + error.message; return; }
-  okEl.textContent = 'Password changed successfully!';
+  okEl.textContent = 'Password changed!';
   setTimeout(() => { document.getElementById('change-pw-modal').style.display = 'none'; }, 1500);
 }
 
@@ -722,11 +755,12 @@ async function loadMessages() {
 }
 
 function renderMessage(msg) {
-  // Prevent duplicates from realtime + initial load
   if (renderedMsgIds.has(msg.id)) return;
   renderedMsgIds.add(msg.id);
 
   const area = document.getElementById('messages-area');
+  if (!area) return;
+
   const isMine = msg.sender === currentUser;
   const dt = new Date(msg.created_at);
   const timeStr = dt.toLocaleString('en-GB', { day:'2-digit', month:'long', year:'numeric', hour:'2-digit', minute:'2-digit', hour12:false });
@@ -763,7 +797,6 @@ function renderMessage(msg) {
 
   row.innerHTML = inner;
 
-  // Context menu (hold / right-click)
   const bubble = row.querySelector('.msg-bubble');
   bubble.addEventListener('contextmenu', e => { e.preventDefault(); showCtxMenu(e, msg.id, isMine, msg.starred); });
   bubble.addEventListener('touchstart', e => {
@@ -780,30 +813,45 @@ function renderMessage(msg) {
 }
 
 // ============================================================
-// REALTIME SUBSCRIPTION — fixed to avoid duplicate messages
+// REALTIME SUBSCRIPTION — the main fix
 // ============================================================
-function subscribeToMessages() {
+function cleanupChannel() {
   if (realtimeChannel) {
-    realtimeChannel.unsubscribe();
+    sb.removeChannel(realtimeChannel);   // ← correct cleanup method
     realtimeChannel = null;
   }
+  isSubscribed = false;
+  setConnStatus('disconnected');
+}
+
+function subscribeToMessages() {
+  cleanupChannel();  // always start fresh
 
   const roomId = getRoomId();
+  setConnStatus('connecting');
 
   realtimeChannel = sb
-    .channel(`room-${roomId}-${Date.now()}`)  // unique channel name
+    .channel(`room-${roomId}`, {
+      config: {
+        broadcast: { self: false },      // don't echo our own broadcasts
+        presence:  { key: currentUser }  // optional: presence tracking
+      }
+    })
+    // ── DB changes: new messages ──────────────────────────────
     .on(
       'postgres_changes',
-      { event: 'INSERT', schema: 'public', table: 'messages', filter: `room_id=eq.${roomId}` },
+      {
+        event:  'INSERT',
+        schema: 'public',
+        table:  'messages',
+        filter: `room_id=eq.${roomId}`   // server-side filter = much faster
+      },
       payload => {
         const msg = payload.new;
         if (!msg) return;
-
-        // Render the message (dedup guard inside renderMessage)
         renderMessage(msg);
-        document.getElementById('messages-area').scrollTop = 999999;
-
-        // Notify only for other people's messages
+        const area = document.getElementById('messages-area');
+        if (area) area.scrollTop = area.scrollHeight;
         if (msg.sender !== currentUser) {
           playNotif();
           showToast(`${msg.sender}: ${msg.type === 'text' ? (msg.content || '').slice(0,40) : '📎'}`);
@@ -811,27 +859,46 @@ function subscribeToMessages() {
         }
       }
     )
+    // ── DB changes: deleted messages ─────────────────────────
     .on(
       'postgres_changes',
-      { event: 'DELETE', schema: 'public', table: 'messages', filter: `room_id=eq.${roomId}` },
+      {
+        event:  'DELETE',
+        schema: 'public',
+        table:  'messages',
+        filter: `room_id=eq.${roomId}`
+      },
       payload => {
         if (!payload.old) return;
         const row = document.querySelector(`.msg-row[data-id="${payload.old.id}"]`);
         if (row) { row.remove(); renderedMsgIds.delete(payload.old.id); }
       }
     )
+    // ── Typing broadcast ──────────────────────────────────────
     .on('broadcast', { event: 'typing' }, payload => {
-      if (payload.payload && payload.payload.user !== currentUser) {
-        document.getElementById('typing-indicator').textContent = payload.payload.user + ' is typing…';
-        clearTimeout(typingTimeout);
-        typingTimeout = setTimeout(() => {
-          document.getElementById('typing-indicator').textContent = '';
-        }, 2000);
-      }
+      const who = payload.payload?.user;
+      if (!who || who === currentUser) return;
+      const el = document.getElementById('typing-indicator');
+      if (!el) return;
+      el.innerHTML = `${escHtml(who)} is typing<span class="typing-dots"><span></span><span></span><span></span></span>`;
+      clearTimeout(typingTimeout);
+      typingTimeout = setTimeout(() => { if (el) el.innerHTML = ''; }, 2500);
     })
     .subscribe(status => {
+      console.log('Realtime status:', status);
       if (status === 'SUBSCRIBED') {
-        console.log('Realtime connected for', roomId);
+        isSubscribed = true;
+        setConnStatus('connected');
+      } else if (status === 'CHANNEL_ERROR' || status === 'TIMED_OUT') {
+        isSubscribed = false;
+        setConnStatus('disconnected');
+        // Auto-reconnect after 3 seconds
+        setTimeout(() => { if (currentChatPartner) subscribeToMessages(); }, 3000);
+      } else if (status === 'CLOSED') {
+        isSubscribed = false;
+        setConnStatus('disconnected');
+      } else {
+        setConnStatus('connecting');
       }
     });
 }
@@ -844,7 +911,7 @@ function showCtxMenu(e, msgId, isMine, isStarred) {
   ctxMsgMine = isMine;
   const menu = document.getElementById('ctx-menu');
   const unsendBtn = document.getElementById('ctx-unsend');
-  const starBtn = document.getElementById('ctx-star');
+  const starBtn   = document.getElementById('ctx-star');
 
   unsendBtn.style.display = isMine ? 'flex' : 'none';
   starBtn.querySelector('svg').setAttribute('fill', isStarred ? '#f59e0b' : 'none');
@@ -854,7 +921,7 @@ function showCtxMenu(e, msgId, isMine, isStarred) {
   const x = Math.min(e.clientX || e.pageX, window.innerWidth - 160);
   const y = Math.min(e.clientY || e.pageY, window.innerHeight - 120);
   menu.style.left = x + 'px';
-  menu.style.top = y + 'px';
+  menu.style.top  = y + 'px';
   menu.style.display = 'block';
   setTimeout(() => document.addEventListener('click', closeCtxMenu, { once: true }), 50);
 }
@@ -896,26 +963,41 @@ async function sendMessage(content, type, fileName) {
   if (!text && !content) return;
 
   const msgObj = {
-    room_id: getRoomId(),
-    sender: currentUser,
-    content: text,
-    type: type || 'text',
+    room_id:   getRoomId(),
+    sender:    currentUser,
+    content:   text,
+    type:      type || 'text',
     file_name: fileName || null,
-    starred: false,
+    starred:   false,
     created_at: new Date().toISOString()
   };
 
-  input.value = '';  // clear immediately for UX
+  input.value = '';
 
   const { data, error } = await sb.from('messages').insert(msgObj).select().single();
   if (error) { showToast('Error: ' + error.message); return; }
 
-  // Render own message immediately (realtime will also fire but dedup handles it)
+  // Render immediately for the sender (realtime INSERT will be deduped)
   renderMessage(data);
-  document.getElementById('messages-area').scrollTop = 999999;
+  const area = document.getElementById('messages-area');
+  if (area) area.scrollTop = area.scrollHeight;
 }
 
 function handleMsgKey(e) { if (e.key === 'Enter') sendMessage(); }
+
+// ============================================================
+// TYPING BROADCAST — throttled to once per 1 second
+// ============================================================
+function handleTyping() {
+  if (!isSubscribed || !realtimeChannel) return;  // ← only broadcast when SUBSCRIBED
+  if (typingThrottle) return;                      // ← throttle: max 1 per second
+  typingThrottle = setTimeout(() => { typingThrottle = null; }, 1000);
+  realtimeChannel.send({
+    type:    'broadcast',
+    event:   'typing',
+    payload: { user: currentUser }
+  });
+}
 
 async function toggleStar(id, btn) {
   const newVal = !btn.classList.contains('starred');
@@ -955,14 +1037,6 @@ async function handleFileUpload(event) {
   await sendMessage(urlData.publicUrl, type, file.name);
   showToast('Uploaded!');
   event.target.value = '';
-}
-
-// ============================================================
-// TYPING INDICATOR
-// ============================================================
-function handleTyping() {
-  if (!realtimeChannel) return;
-  realtimeChannel.send({ type: 'broadcast', event: 'typing', payload: { user: currentUser } });
 }
 
 // ============================================================
@@ -1012,7 +1086,7 @@ async function renderMedia() {
 }
 
 // ============================================================
-// NOTIFICATIONS & SOUND
+// TOAST & NOTIFICATIONS
 // ============================================================
 function showToast(msg) {
   const t = document.getElementById('notif-toast');
@@ -1021,25 +1095,11 @@ function showToast(msg) {
   setTimeout(() => t.classList.remove('show'), 3000);
 }
 
-function playNotif() {
-  try {
-    const ctx = new (window.AudioContext || window.webkitAudioContext)();
-    const osc = ctx.createOscillator();
-    const gain = ctx.createGain();
-    osc.connect(gain); gain.connect(ctx.destination);
-    osc.frequency.setValueAtTime(880, ctx.currentTime);
-    osc.frequency.setValueAtTime(660, ctx.currentTime + 0.1);
-    gain.gain.setValueAtTime(0.3, ctx.currentTime);
-    gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.3);
-    osc.start(ctx.currentTime); osc.stop(ctx.currentTime + 0.3);
-  } catch(e) {}
-}
-
 // ============================================================
 // NAVIGATION
 // ============================================================
 function backToChatList() {
-  if (realtimeChannel) { realtimeChannel.unsubscribe(); realtimeChannel = null; }
+  cleanupChannel();
   renderedMsgIds.clear();
   showChatList();
 }
@@ -1058,55 +1118,5 @@ function escHtml(str) {
 }
 function sanitize(str) { return str.replace(/[^a-zA-Z0-9]/g,'_'); }
 </script>
-
-<!--
-══════════════════════════════════════════════════════════
-SETUP GUIDE
-══════════════════════════════════════════════════════════
-
-1. SUPABASE DATABASE — run this SQL in SQL Editor:
-
-CREATE TABLE IF NOT EXISTS messages (
-  id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
-  room_id TEXT NOT NULL,
-  sender TEXT NOT NULL,
-  content TEXT,
-  type TEXT DEFAULT 'text',
-  file_name TEXT,
-  starred BOOLEAN DEFAULT false,
-  created_at TIMESTAMPTZ DEFAULT NOW()
-);
-ALTER TABLE messages ENABLE ROW LEVEL SECURITY;
-CREATE POLICY "Allow all" ON messages FOR ALL USING (true) WITH CHECK (true);
-
--- Enable realtime for the messages table:
-ALTER PUBLICATION supabase_realtime ADD TABLE messages;
-
--- Storage bucket (if not already created):
--- Go to Storage → New bucket → name: "chat-files" → Public: ON
-
-2. SUPABASE AUTH — create one user per person:
-   Go to Authentication → Users → Add User:
-   abu_bakoar@chatapp.local   / password: 1111
-   mahdi_hasan@chatapp.local  / password: 2222
-   sayhan_kabir@chatapp.local / password: 3333
-   howladar@chatapp.local     / password: 4444
-   guest@chatapp.local        / password: 0000
-
-   Also go to Authentication → URL Configuration and add your
-   site URL to "Allowed Redirect URLs" to prevent sign-in issues.
-
-3. NOTIFICATIONS — when users log in, they'll see a banner
-   to enable push notifications. Once granted, they get
-   OS-level alerts even when the browser tab is in background.
-   True background push (tab fully closed) requires a backend
-   push server with VAPID keys — current setup works when the
-   tab is open but hidden/minimized.
-
-4. SESSION PERSISTENCE — Supabase Auth persists the JWT in
-   localStorage automatically. Reloading the page will NOT
-   log users out; the session is restored instantly.
-══════════════════════════════════════════════════════════
--->
 </body>
 </html>
