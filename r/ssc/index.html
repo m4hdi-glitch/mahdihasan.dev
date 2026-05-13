@@ -645,7 +645,6 @@ function showChatList() {
   showNotifBannerIfNeeded();
   switchTab('chats');
   subscribeGlobalNotifications();
-  history.pushState({ page: 'chat-list' }, '');
 }
 
 function switchTab(tab) {
@@ -798,7 +797,6 @@ function openDMChat(partner) {
   loadMessages();
   deleteExpiredMessages();
   subscribeToMessages();
-  history.pushState({ page: 'chat-room' }, '');
 }
 
 function openGroupChatInTab() {
@@ -814,7 +812,6 @@ function openGroupChatInTab() {
   loadMessages();
   deleteExpiredMessages();
   subscribeToMessages();
-  history.pushState({ page: 'group-room' }, '');
 }
 
 function getDMRoomId(a, b) { return [a, b].sort().join('__'); }
@@ -985,14 +982,15 @@ function subscribeToMessages() {
     .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'messages', filter: `room_id=eq.${roomId}` }, payload => {
       const msg = payload.new;
       if (!msg) return;
-      renderMessage(msg, msg.sender !== currentUser);
+      if (renderedMsgIds.has(msg.id)) return; // already rendered by sendMessage()
+      const isFromMe = msg.sender === currentUser;
+      renderMessage(msg, !isFromMe);
       const area = document.getElementById('messages-area');
       if (area) area.scrollTop = area.scrollHeight;
-      if (msg.sender !== currentUser) {
+      if (!isFromMe) {
         playNotif();
         showToast(`${msg.sender}: ${msg.type === 'text' ? (msg.content || '').slice(0,40) : '📎'}`);
         fireNotification(msg.sender, msg.type === 'text' ? (msg.content || '') : '📎 Sent a file');
-        // Broadcast seen immediately since we're currently in this chat
         setLastRead(roomId);
         setTimeout(() => broadcastSeen(), 300);
       }
@@ -1117,15 +1115,21 @@ async function sendMessage(content, type, fileName) {
     content:    text,
     type:       type || 'text',
     file_name:  fileName || null,
-    starred:    false,
-    created_at: new Date().toISOString()
+    starred:    false
+    // Do NOT set created_at client-side — let DB generate it to avoid timestamp mismatch
   };
   input.value = '';
   const { data, error } = await sb.from('messages').insert(msgObj).select().single();
   if (error) { showToast('Error: ' + error.message); return; }
-  renderMessage(data, false);
+
+  // Render immediately for sender (realtime INSERT will be a duplicate → deduped by renderedMsgIds)
+  // Force sender to currentUser so it always renders on the right (mine) side
+  const msgWithSender = { ...data, sender: currentUser };
+  renderMessage(msgWithSender, false);
+
   const area = document.getElementById('messages-area');
   if (area) area.scrollTop = area.scrollHeight;
+
   // Update list for sender's own view (move to top, update last message)
   if (currentChatType === 'dm') {
     const displayContent = type === 'image' ? '📷 Image' : type === 'file' ? '📎 File' : (text || '');
@@ -1250,26 +1254,6 @@ function hideAllPages() {
   document.getElementById('chat-room').style.display = 'none';
 }
 
- // ============================================================
-// MOBILE BACK BUTTON HANDLER
-// ============================================================
-
-window.addEventListener('popstate', function () {
-
-  // If inside chat room → go back to chat list
-  if (
-    document.getElementById('chat-room').style.display === 'flex'
-  ) {
-
-    backToChatList();
-
-    // Push state again so browser stays inside app
-    history.pushState({ page: 'chat-list' }, '');
-
-    return;
-  }
-
-});
 // ============================================================
 // UTILS
 // ============================================================
