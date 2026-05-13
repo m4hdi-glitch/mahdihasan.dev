@@ -710,6 +710,7 @@ function switchTab(tab) {
     renderChatList();
   } else if (tab === 'group') {
     document.getElementById('group-tab').classList.remove('hidden');
+    openGroupChatInTab();
   } else if (tab === 'media') {
     document.getElementById('media-tab-content').classList.remove('hidden');
     renderMedia();
