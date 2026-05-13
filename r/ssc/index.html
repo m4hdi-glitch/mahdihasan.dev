@@ -1,0 +1,1006 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Class 10 Book 2025 PDF Download</title>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Inter', sans-serif; background: #fff; min-height: 100vh; }
+
+  /* ===== COVER PAGE ===== */
+  #cover-page { display: block; max-width: 480px; margin: 0 auto; padding: 10px; }
+  .cover-title-bar { background: #fff; border-bottom: 1px solid #eee; padding: 6px 0; text-align: center; }
+  .cover-title-bar a { color: #e53e3e; font-size: 13px; text-decoration: underline; font-family: 'Hind Siliguri', sans-serif; }
+  .cover-heading { text-align: center; color: #27ae60; font-size: 22px; font-weight: 700; padding: 10px 0 12px; font-family: 'Hind Siliguri', sans-serif; }
+  .cover-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  .cover-table th { background: #2c3e6b; color: #fff; padding: 8px 10px; text-align: center; font-family: 'Hind Siliguri', sans-serif; font-size: 13px; }
+  .cover-table td { border: 1px solid #ddd; padding: 7px 10px; text-align: left; vertical-align: middle; font-family: 'Hind Siliguri', sans-serif; }
+  .cover-table tr:nth-child(even) td { background: #f9f9f9; }
+  .cover-table td.num { text-align: center; width: 36px; }
+  .pdf-btn { display: inline-block; background: #c0392b; color: #fff; font-size: 10px; padding: 3px 7px; border-radius: 3px; text-decoration: none; margin: 1px; cursor: pointer; }
+
+  /* Secret tap zones */
+  .secret-zone { width: 100%; height: 30px; cursor: default; user-select: none; }
+  .zone-red { background: #e74c3c; }
+  .zone-green { background: #27ae60; }
+
+  /* ===== MAIN APP ===== */
+  #app { display: none; max-width: 480px; margin: 0 auto; height: 100vh; flex-direction: column; background: #f8fafc; }
+
+  /* ===== LOGIN PAGE ===== */
+  #login-page { display: flex; flex-direction: column; align-items: center; padding: 40px 20px; background: #fff; flex: 1; }
+  #login-page h1 { font-size: 22px; color: #1e293b; margin-bottom: 24px; font-weight: 500; }
+  .user-btn { display: flex; align-items: center; gap: 14px; background: #f1f5f9; border: none; border-radius: 12px; padding: 14px 18px; width: 100%; max-width: 340px; margin-bottom: 10px; cursor: pointer; font-size: 16px; color: #1e293b; transition: background 0.15s; }
+  .user-btn:hover { background: #e2e8f0; }
+  .user-avatar { width: 38px; height: 38px; border-radius: 50%; background: #1e293b; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .user-avatar.teal { background: #0f766e; }
+  .user-avatar.orange { background: #c2410c; }
+  .user-avatar.navy { background: #1e40af; }
+  .user-avatar.gray { background: #94a3b8; }
+  .exit-btn { background: #1e3a5f; color: #fff; border: none; border-radius: 6px; padding: 10px 24px; font-size: 13px; font-weight: 600; cursor: pointer; margin-top: 16px; letter-spacing: 1px; display: flex; align-items: center; gap: 6px; }
+
+  /* User password modal */
+  #user-pw-modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.7); z-index: 2000; align-items: center; justify-content: center; }
+  .upw-box { background: #fff; border-radius: 14px; padding: 28px; max-width: 300px; width: 90%; text-align: center; }
+  .upw-box h3 { margin-bottom: 16px; color: #1e293b; }
+  .upw-box input { width: 100%; padding: 10px 14px; border: 1.5px solid #cbd5e1; border-radius: 8px; font-size: 15px; margin-bottom: 12px; text-align: center; letter-spacing: 4px; }
+  .upw-box button { background: #1e3a5f; color: #fff; border: none; border-radius: 8px; padding: 10px 24px; cursor: pointer; font-size: 14px; display: inline-flex; align-items: center; gap: 6px; }
+  #upw-error { color: #ef4444; font-size: 12px; margin-top: 8px; min-height: 14px; }
+
+  /* Change password modal */
+  #change-pw-modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.7); z-index: 3000; align-items: center; justify-content: center; }
+  .cpw-box { background: #fff; border-radius: 14px; padding: 28px; max-width: 310px; width: 90%; text-align: center; }
+  .cpw-box h3 { margin-bottom: 6px; color: #1e293b; }
+  .cpw-box p { font-size: 12px; color: #64748b; margin-bottom: 16px; }
+  .cpw-box input { width: 100%; padding: 10px 14px; border: 1.5px solid #cbd5e1; border-radius: 8px; font-size: 14px; margin-bottom: 10px; }
+  .cpw-box .btn-row { display: flex; gap: 8px; justify-content: center; margin-top: 4px; }
+  .cpw-box .btn-save { background: #1e3a5f; color: #fff; border: none; border-radius: 8px; padding: 9px 20px; cursor: pointer; font-size: 13px; }
+  .cpw-box .btn-cancel { background: #f1f5f9; color: #475569; border: none; border-radius: 8px; padding: 9px 20px; cursor: pointer; font-size: 13px; }
+  #cpw-error { color: #ef4444; font-size: 12px; margin-top: 6px; min-height: 14px; }
+  #cpw-success { color: #27ae60; font-size: 12px; margin-top: 6px; min-height: 14px; }
+
+  /* ===== CHAT LIST PAGE ===== */
+  #chat-list-page { display: none; flex-direction: column; height: 100vh; background: #fff; }
+  .chat-header { display: flex; align-items: center; gap: 10px; padding: 14px 16px; border-bottom: 1px solid #e2e8f0; background: #fff; }
+  .chat-header .avatar-sm { width: 36px; height: 36px; border-radius: 50%; background: #1e293b; color: #fff; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .tab-bar { display: flex; gap: 8px; flex: 1; justify-content: center; }
+  .tab-btn { padding: 7px 18px; border-radius: 20px; border: 1.5px solid #cbd5e1; background: transparent; font-size: 14px; color: #475569; cursor: pointer; position: relative; font-weight: 500; transition: all 0.15s; }
+  .tab-btn.active { background: #1e3a5f; color: #fff; border-color: #1e3a5f; }
+  .tab-btn .badge { position: absolute; top: -5px; right: -5px; background: #f87171; color: #fff; border-radius: 50%; width: 18px; height: 18px; font-size: 10px; display: flex; align-items: center; justify-content: center; }
+  .chat-scroll { flex: 1; overflow-y: auto; padding: 10px 12px; }
+  .chat-item { display: flex; align-items: center; gap: 12px; padding: 12px 10px; border: 1.5px solid #e2e8f0; border-radius: 12px; margin-bottom: 10px; cursor: pointer; transition: background 0.12s; }
+  .chat-item:hover { background: #f8fafc; }
+  .chat-item .ci-avatar { width: 42px; height: 42px; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .chat-item .ci-info { flex: 1; min-width: 0; }
+  .chat-item .ci-name { font-weight: 600; font-size: 15px; color: #1e293b; }
+  .chat-item .ci-last { font-size: 12px; color: #94a3b8; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-top: 2px; }
+  .chat-item .ci-right { display: flex; align-items: center; gap: 8px; }
+
+  /* ===== CHAT ROOM ===== */
+  #chat-room { display: none; flex-direction: column; height: 100vh; background: #f8fafc; }
+  .room-header { display: flex; align-items: center; gap: 10px; padding: 12px 14px; background: #fff; border-bottom: 1px solid #e2e8f0; }
+  .room-header .back-btn { background: none; border: none; cursor: pointer; color: #475569; padding: 4px; display: flex; align-items: center; }
+  .room-header .rh-avatar { width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; }
+  .room-header .rh-name { font-weight: 600; font-size: 16px; color: #1e293b; }
+  .room-header .rh-typing { font-size: 11px; color: #27ae60; height: 14px; }
+  .messages-area { flex: 1; overflow-y: auto; padding: 14px 12px; display: flex; flex-direction: column; gap: 6px; }
+  .msg-row { display: flex; flex-direction: column; max-width: 75%; }
+  .msg-row.mine { align-self: flex-end; align-items: flex-end; }
+  .msg-row.theirs { align-self: flex-start; align-items: flex-start; }
+  .msg-bubble { padding: 9px 13px; border-radius: 16px; font-size: 14px; line-height: 1.4; position: relative; word-break: break-word; cursor: default; user-select: none; -webkit-user-select: none; }
+  .msg-row.mine .msg-bubble { background: #1e3a5f; color: #fff; border-bottom-right-radius: 4px; }
+  .msg-row.theirs .msg-bubble { background: #fff; color: #1e293b; border: 1px solid #e2e8f0; border-bottom-left-radius: 4px; }
+  .msg-row.mine .msg-bubble.starred { background: #1e4080; border: 1.5px solid #fbbf24; }
+  .msg-row.theirs .msg-bubble.starred { border: 1.5px solid #fbbf24; background: #fffbeb; }
+  .msg-meta { display: flex; align-items: center; gap: 5px; margin-top: 2px; }
+  .msg-time { font-size: 10px; color: #94a3b8; }
+  .star-btn { background: none; border: none; cursor: pointer; color: #cbd5e1; padding: 0 2px; transition: color 0.15s; display: flex; align-items: center; }
+  .star-btn.starred { color: #f59e0b; }
+  .msg-img { max-width: 200px; border-radius: 10px; margin-top: 4px; cursor: pointer; }
+  .msg-file { display: flex; align-items: center; gap: 8px; background: rgba(255,255,255,0.15); border-radius: 8px; padding: 7px 10px; margin-top: 4px; text-decoration: none; font-size: 12px; color: inherit; }
+  .msg-row.theirs .msg-file { background: #f1f5f9; color: #1e293b; }
+  .sender-name { font-size: 11px; color: #64748b; margin-bottom: 2px; font-weight: 600; }
+
+  /* Hold-to-unsend context menu */
+  #ctx-menu { display: none; position: fixed; z-index: 9000; background: #1e293b; border-radius: 10px; box-shadow: 0 8px 30px rgba(0,0,0,0.3); overflow: hidden; min-width: 150px; }
+  #ctx-menu button { display: flex; align-items: center; gap: 10px; width: 100%; padding: 12px 16px; background: none; border: none; color: #f1f5f9; font-size: 14px; cursor: pointer; transition: background 0.1s; text-align: left; }
+  #ctx-menu button:hover { background: #334155; }
+  #ctx-menu button.danger { color: #f87171; }
+  #ctx-menu .ctx-divider { height: 1px; background: #334155; }
+
+  /* Input area */
+  .typing-indicator { padding: 4px 16px; font-size: 11px; color: #94a3b8; height: 20px; }
+  .input-area { display: flex; align-items: center; gap: 8px; padding: 10px 12px; background: #fff; border-top: 1px solid #e2e8f0; }
+  .input-area input[type=text] { flex: 1; border: 1.5px solid #cbd5e1; border-radius: 20px; padding: 9px 16px; font-size: 14px; outline: none; }
+  .input-area input[type=text]:focus { border-color: #1e3a5f; }
+  .attach-btn, .send-btn { background: none; border: none; cursor: pointer; padding: 4px; display: flex; align-items: center; }
+  #file-input { display: none; }
+
+  /* Settings button */
+  .settings-btn { background: none; border: none; cursor: pointer; padding: 4px; display: flex; align-items: center; margin-left: auto; }
+
+  /* Media */
+  .media-section { margin-bottom: 20px; }
+  .media-section h3 { font-size: 13px; color: #64748b; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 10px; padding-bottom: 6px; border-bottom: 1px solid #e2e8f0; }
+  .media-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; }
+  .media-thumb { aspect-ratio: 1; border-radius: 8px; background: #e2e8f0; overflow: hidden; cursor: pointer; }
+  .media-thumb img { width: 100%; height: 100%; object-fit: cover; }
+  .starred-msg-item { background: #fffbeb; border: 1px solid #fde68a; border-radius: 10px; padding: 10px 12px; margin-bottom: 8px; }
+  .starred-msg-item .sm-from { font-size: 11px; color: #92400e; font-weight: 600; margin-bottom: 4px; }
+  .starred-msg-item .sm-text { font-size: 14px; color: #1e293b; }
+  .starred-msg-item .sm-time { font-size: 10px; color: #94a3b8; margin-top: 3px; }
+
+  /* Notifications */
+  .notif-toast { position: fixed; top: 16px; left: 50%; transform: translateX(-50%); background: #1e293b; color: #fff; padding: 10px 20px; border-radius: 20px; font-size: 13px; z-index: 9999; opacity: 0; transition: opacity 0.3s; pointer-events: none; max-width: 320px; text-align: center; }
+  .notif-toast.show { opacity: 1; }
+
+  .hidden { display: none !important; }
+  .flex { display: flex !important; }
+
+  /* Bottom bar */
+  .bottom-bar { padding: 8px 16px 12px; border-top: 1px solid #e2e8f0; background: #fff; }
+</style>
+</head>
+<body>
+
+<!-- NOTIFICATION TOAST -->
+<div class="notif-toast" id="notif-toast"></div>
+
+<!-- Context menu for hold-to-unsend -->
+<div id="ctx-menu">
+  <button id="ctx-star" onclick="ctxStar()">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+    Star Message
+  </button>
+  <div class="ctx-divider"></div>
+  <button id="ctx-unsend" onclick="ctxUnsend()" class="danger">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/><path d="M9 6V4h6v2"/></svg>
+    Unsend Message
+  </button>
+</div>
+
+<!-- ===== COVER PAGE ===== -->
+<div id="cover-page">
+  <div class="cover-title-bar">
+    <a href="#">SSC 2026 Short Syllabus | এসএসসি ২০২৬ সিলেবাস (new)</a>
+  </div>
+  <div class="cover-heading">Class 10 Book 2025 PDF Download</div>
+  <table class="cover-table">
+    <thead>
+      <tr>
+        <th>ক্রমিক</th>
+        <th>পাঠাপুস্তকের নাম</th>
+        <th>বাংলা ভার্সন</th>
+        <th>ইংরেজি ভার্সন</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr><td class="num">১।</td><td>বাংলা সাহিত্য</td><td><span class="pdf-btn">PDF</span></td><td><span class="pdf-btn">PDF</span></td></tr>
+      <tr><td class="num">২।</td><td>বাংলা সহপাঠ</td><td><span class="pdf-btn">PDF</span></td><td><span class="pdf-btn">PDF</span></td></tr>
+      <tr><td class="num">৩।</td><td>বাংলা ভাষার ব্যাকরণ</td><td><span class="pdf-btn">PDF</span></td><td><span class="pdf-btn">PDF</span></td></tr>
+      <tr><td class="num">৪।</td><td>English for Today</td><td><span class="pdf-btn">PDF</span></td><td><span class="pdf-btn">PDF</span></td></tr>
+      <tr><td class="num">৫।</td><td>গণিত</td><td><span class="pdf-btn">PDF</span></td><td><span class="pdf-btn">PDF</span></td></tr>
+      <tr><td class="num">৬।</td><td>English Grammar and Composition</td><td><span class="pdf-btn">PDF</span></td><td><span class="pdf-btn">PDF</span></td></tr>
+      <tr><td class="num">৭।</td><td>তথ্য ও যোগাযোগ প্রযুক্তি</td><td><span class="pdf-btn">PDF</span></td><td><span class="pdf-btn">PDF</span></td></tr>
+    </tbody>
+  </table>
+
+  <!-- Secret tap zones: red × 2 → green × 2 -->
+  <div class="secret-zone zone-red" id="zone-red-1" style="margin-top:18px;"></div>
+  <div class="secret-zone zone-green" id="zone-green-1" style="margin-top:4px;"></div>
+  <div class="secret-zone zone-red" id="zone-red-2" style="margin-top:4px;"></div>
+</div>
+
+<!-- ===== MAIN APP ===== -->
+<div id="app">
+
+  <!-- LOGIN PAGE -->
+  <div id="login-page">
+    <h1>Log in</h1>
+    <button class="user-btn" onclick="selectUser('Abu Bakoar','black')">
+      <div class="user-avatar"><?xml version="1.0"?><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg></div>
+      Abu Bakoar
+    </button>
+    <button class="user-btn" onclick="selectUser('Mahdi Hasan','teal')">
+      <div class="user-avatar teal"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg></div>
+      Mahdi Hasan
+    </button>
+    <button class="user-btn" onclick="selectUser('Sayhan Kabir','orange')">
+      <div class="user-avatar orange"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg></div>
+      Sayhan Kabir
+    </button>
+    <button class="user-btn" onclick="selectUser('Howladar','navy')">
+      <div class="user-avatar navy"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg></div>
+      Howladar
+    </button>
+    <button class="user-btn" onclick="selectUser('Guest','gray')">
+      <div class="user-avatar gray"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg></div>
+      Guest
+    </button>
+    <button class="exit-btn" onclick="exitToMain()">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+      EXIT
+    </button>
+  </div>
+
+  <!-- CHAT LIST PAGE -->
+  <div id="chat-list-page">
+    <div class="chat-header">
+      <div class="avatar-sm" id="cl-user-avatar">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
+      </div>
+      <div class="tab-bar">
+        <button class="tab-btn active" id="tab-chats" onclick="switchTab('chats')">Chats</button>
+        <button class="tab-btn" id="tab-group" onclick="switchTab('group')">
+          <span id="group-badge" class="badge hidden">3+</span>Group
+        </button>
+        <button class="tab-btn" id="tab-media" onclick="switchTab('media')">Media</button>
+      </div>
+      <button class="settings-btn" onclick="openChangePw()" title="Change Password">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#64748b" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M4.93 4.93a10 10 0 0 0 0 14.14"/><path d="M12 2v2M12 20v2M2 12h2M20 12h2"/></svg>
+      </button>
+    </div>
+    <div id="chats-tab" class="chat-scroll"></div>
+    <div id="group-tab" class="hidden chat-scroll"></div>
+    <div id="media-tab-content" class="hidden chat-scroll"></div>
+    <div class="bottom-bar">
+      <button class="exit-btn" onclick="logOut()">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+        LOG OUT
+      </button>
+    </div>
+  </div>
+
+  <!-- CHAT ROOM -->
+  <div id="chat-room">
+    <div class="room-header">
+      <button class="back-btn" onclick="backToChatList()">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#475569" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg>
+      </button>
+      <div class="rh-avatar" id="room-avatar">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
+      </div>
+      <div>
+        <div class="rh-name" id="room-name">Name</div>
+        <div class="rh-typing" id="room-typing"></div>
+      </div>
+      <div style="margin-left:auto; display:flex; align-items:center; gap:8px;">
+        <button onclick="clearMessages()" style="background:none;border:none;cursor:pointer;font-size:12px;color:#ef4444;display:flex;align-items:center;gap:4px;">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#ef4444" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/><path d="M9 6V4h6v2"/></svg>
+          Clear
+        </button>
+      </div>
+    </div>
+    <div class="messages-area" id="messages-area"></div>
+    <div class="typing-indicator" id="typing-indicator"></div>
+    <div class="input-area">
+      <button class="attach-btn" onclick="document.getElementById('file-input').click()">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#64748b" stroke-width="2"><path d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48"/></svg>
+      </button>
+      <input type="file" id="file-input" accept="image/*,.pdf" onchange="handleFileUpload(event)">
+      <input type="text" id="msg-input" placeholder="Type a message…" onkeydown="handleMsgKey(event)" oninput="handleTyping()">
+      <button class="send-btn" onclick="sendMessage()">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#1e3a5f" stroke-width="2"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+      </button>
+    </div>
+    <div class="bottom-bar">
+      <button class="exit-btn" onclick="logOut()">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+        LOG OUT
+      </button>
+    </div>
+  </div>
+
+</div>
+
+<!-- USER PASSWORD MODAL -->
+<div id="user-pw-modal">
+  <div class="upw-box">
+    <h3 id="upw-title">Enter Password</h3>
+    <input type="password" id="upw-input" placeholder="••••" onkeydown="if(event.key==='Enter')checkUserPw()">
+    <button onclick="checkUserPw()">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" y1="12" x2="3" y2="12"/></svg>
+      Login
+    </button>
+    <div id="upw-error"></div>
+    <button onclick="document.getElementById('user-pw-modal').style.display='none'" style="background:none;border:none;color:#94a3b8;font-size:12px;margin-top:8px;cursor:pointer;">Cancel</button>
+  </div>
+</div>
+
+<!-- CHANGE PASSWORD MODAL -->
+<div id="change-pw-modal">
+  <div class="cpw-box">
+    <h3>Change Password</h3>
+    <p>Changing password for <strong id="cpw-username"></strong></p>
+    <input type="password" id="cpw-current" placeholder="Current password">
+    <input type="password" id="cpw-new" placeholder="New password (min 4 chars)">
+    <input type="password" id="cpw-confirm" placeholder="Confirm new password">
+    <div class="btn-row">
+      <button class="btn-cancel" onclick="document.getElementById('change-pw-modal').style.display='none'">Cancel</button>
+      <button class="btn-save" onclick="saveNewPassword()">Save</button>
+    </div>
+    <div id="cpw-error"></div>
+    <div id="cpw-success"></div>
+  </div>
+</div>
+
+<script>
+// ============================================================
+// CONFIGURATION
+// ============================================================
+const SUPABASE_URL = 'https://gnubxjjoyqbxtfzhdrmz.supabase.co';
+const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImdudWJ4ampveXFieHRmemhkcm16Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzg2ODcwNDksImV4cCI6MjA5NDI2MzA0OX0.ex9kouY-asfdT2v48Sh3lWHiFGSdPHeGD7yHH_y2zaQ';
+const MESSAGE_EXPIRY_DAYS = 4;
+const SESSION_KEY = 'chat_session_user';
+const PASSWORDS_KEY = 'chat_user_passwords';
+
+// Default SHA-256 hashed passwords
+// Original: Abu Bakoar=1111, Mahdi Hasan=2222, Sayhan Kabir=3333, Howladar=4444, Guest=0000
+// These are SHA-256 hashes of those values
+const DEFAULT_PASSWORD_HASHES = {
+  'Abu Bakoar':   '0ffe1abd1a08215353c233d6e009613e95eec4253832a761af28ff37ac5a150c',
+  'Mahdi Hasan':  'f4dd4112a2540430e5a8a7158bcf120f8f2489bffa4d8f6aefa8dcd584047011',
+  'Sayhan Kabir': '318aee3fed8c9d040d35a7fc1fa776fb31303833aa2de885354ddf3d44d8fb69',
+  'Howladar':     '79f06f8fde333461739f220090a23cb2a79f6d714bee100d0e4b4af249294619',
+  'Guest':        'c1f330d0aff31c1c87403f1e4347bcc21aff7c179908723535f2b31723702525'
+};
+
+// We store hashes in localStorage so users can change their passwords
+// On first load, seed from DEFAULT_PASSWORD_HASHES if not already set
+function getStoredHashes() {
+  try {
+    const stored = localStorage.getItem(PASSWORDS_KEY);
+    if (stored) return JSON.parse(stored);
+  } catch(e) {}
+  return null;
+}
+
+function initPasswords() {
+  if (!getStoredHashes()) {
+    localStorage.setItem(PASSWORDS_KEY, JSON.stringify(DEFAULT_PASSWORD_HASHES));
+  }
+}
+
+function getHashForUser(username) {
+  const hashes = getStoredHashes() || DEFAULT_PASSWORD_HASHES;
+  return hashes[username] || null;
+}
+
+function setHashForUser(username, hash) {
+  const hashes = getStoredHashes() || { ...DEFAULT_PASSWORD_HASHES };
+  hashes[username] = hash;
+  localStorage.setItem(PASSWORDS_KEY, JSON.stringify(hashes));
+}
+
+async function sha256(message) {
+  const msgBuffer = new TextEncoder().encode(message);
+  const hashBuffer = await crypto.subtle.digest('SHA-256', msgBuffer);
+  const hashArray = Array.from(new Uint8Array(hashBuffer));
+  return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+}
+
+const USER_COLORS = {
+  'Abu Bakoar': '#1e293b',
+  'Mahdi Hasan': '#0f766e',
+  'Sayhan Kabir': '#c2410c',
+  'Howladar': '#1e40af',
+  'Guest': '#94a3b8'
+};
+
+// ============================================================
+// SUPABASE INIT
+// ============================================================
+let sb = null;
+try {
+  sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+} catch(e) { console.warn('Supabase not configured'); }
+
+// ============================================================
+// STATE
+// ============================================================
+let tapSequence = [];
+let currentUser = null;
+let currentChatPartner = null;
+let currentChatType = 'dm';
+let realtimeChannel = null;
+let typingTimeout = null;
+let ctxMsgId = null;
+let ctxMsgMine = false;
+let holdTimer = null;
+
+// ============================================================
+// INIT - Check for saved session
+// ============================================================
+window.addEventListener('DOMContentLoaded', () => {
+  initPasswords();
+  const saved = localStorage.getItem(SESSION_KEY);
+  if (saved) {
+    currentUser = saved;
+    document.getElementById('cover-page').style.display = 'none';
+    document.getElementById('app').style.display = 'flex';
+    document.getElementById('app').style.flexDirection = 'column';
+    showChatList();
+  }
+  setupSecretZones();
+});
+
+// ============================================================
+// SECRET TAP UNLOCK (red×2 → green×2)
+// ============================================================
+const tapTarget = ['red','red','green','green'];
+
+function setupSecretZones() {
+  document.getElementById('zone-red-1').addEventListener('click', () => registerTap('red'));
+  document.getElementById('zone-red-2').addEventListener('click', () => registerTap('red'));
+  document.getElementById('zone-green-1').addEventListener('click', () => registerTap('green'));
+}
+
+function registerTap(color) {
+  tapSequence.push(color);
+  if (tapSequence.length > tapTarget.length) tapSequence = tapSequence.slice(-tapTarget.length);
+  if (JSON.stringify(tapSequence) === JSON.stringify(tapTarget)) {
+    tapSequence = [];
+    unlockApp();
+  }
+}
+
+function unlockApp() {
+  document.getElementById('cover-page').style.display = 'none';
+  document.getElementById('app').style.display = 'flex';
+  document.getElementById('app').style.flexDirection = 'column';
+  showLoginPage();
+}
+
+// ============================================================
+// LOGIN
+// ============================================================
+function showLoginPage() {
+  hideAllPages();
+  document.getElementById('login-page').style.display = 'flex';
+}
+
+let selectedUserName = '';
+function selectUser(name) {
+  selectedUserName = name;
+  document.getElementById('upw-title').textContent = `Password for ${name}`;
+  document.getElementById('upw-input').value = '';
+  document.getElementById('upw-error').textContent = '';
+  document.getElementById('user-pw-modal').style.display = 'flex';
+  setTimeout(() => document.getElementById('upw-input').focus(), 100);
+}
+
+async function checkUserPw() {
+  const pw = document.getElementById('upw-input').value;
+  const hash = await sha256(pw);
+  const stored = getHashForUser(selectedUserName);
+  if (hash === stored) {
+    document.getElementById('user-pw-modal').style.display = 'none';
+    currentUser = selectedUserName;
+    localStorage.setItem(SESSION_KEY, currentUser); // persist session
+    showChatList();
+  } else {
+    document.getElementById('upw-error').textContent = 'Wrong password.';
+  }
+}
+
+function logOut() {
+  localStorage.removeItem(SESSION_KEY);
+  if (realtimeChannel) realtimeChannel.unsubscribe();
+  currentUser = null;
+  currentChatPartner = null;
+  hideAllPages();
+  document.getElementById('app').style.display = 'none';
+  document.getElementById('cover-page').style.display = 'block';
+  tapSequence = [];
+}
+
+function exitToMain() {
+  // Exit without logout — session stays so they can come back
+  if (realtimeChannel) realtimeChannel.unsubscribe();
+  hideAllPages();
+  document.getElementById('app').style.display = 'none';
+  document.getElementById('cover-page').style.display = 'block';
+}
+
+// ============================================================
+// CHANGE PASSWORD
+// ============================================================
+function openChangePw() {
+  document.getElementById('cpw-username').textContent = currentUser;
+  document.getElementById('cpw-current').value = '';
+  document.getElementById('cpw-new').value = '';
+  document.getElementById('cpw-confirm').value = '';
+  document.getElementById('cpw-error').textContent = '';
+  document.getElementById('cpw-success').textContent = '';
+  document.getElementById('change-pw-modal').style.display = 'flex';
+}
+
+async function saveNewPassword() {
+  const current = document.getElementById('cpw-current').value;
+  const newPw   = document.getElementById('cpw-new').value;
+  const confirm = document.getElementById('cpw-confirm').value;
+  const errEl   = document.getElementById('cpw-error');
+  const okEl    = document.getElementById('cpw-success');
+  errEl.textContent = ''; okEl.textContent = '';
+
+  if (!current || !newPw || !confirm) { errEl.textContent = 'Fill all fields.'; return; }
+  if (newPw.length < 4) { errEl.textContent = 'New password must be at least 4 characters.'; return; }
+  if (newPw !== confirm) { errEl.textContent = 'Passwords do not match.'; return; }
+
+  const currentHash = await sha256(current);
+  if (currentHash !== getHashForUser(currentUser)) { errEl.textContent = 'Current password is wrong.'; return; }
+
+  const newHash = await sha256(newPw);
+  setHashForUser(currentUser, newHash);
+  okEl.textContent = 'Password changed successfully!';
+  setTimeout(() => { document.getElementById('change-pw-modal').style.display = 'none'; }, 1500);
+}
+
+// ============================================================
+// CHAT LIST
+// ============================================================
+function showChatList() {
+  hideAllPages();
+  document.getElementById('chat-list-page').style.display = 'flex';
+  document.getElementById('chat-list-page').style.flexDirection = 'column';
+  // Set header avatar color
+  const color = USER_COLORS[currentUser] || '#94a3b8';
+  document.getElementById('cl-user-avatar').style.background = color;
+  switchTab('chats');
+}
+
+function switchTab(tab) {
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  const tabEl = document.getElementById('tab-' + tab);
+  if (tabEl) tabEl.classList.add('active');
+  ['chats-tab','group-tab','media-tab-content'].forEach(id => document.getElementById(id).classList.add('hidden'));
+
+  if (tab === 'chats') {
+    document.getElementById('chats-tab').classList.remove('hidden');
+    renderChatList();
+  } else if (tab === 'group') {
+    document.getElementById('group-tab').classList.remove('hidden');
+    openGroupChat();
+  } else if (tab === 'media') {
+    document.getElementById('media-tab-content').classList.remove('hidden');
+    renderMedia();
+  }
+}
+
+function renderChatList() {
+  const others = Object.keys(USER_COLORS).filter(u => u !== currentUser);
+  const container = document.getElementById('chats-tab');
+  container.innerHTML = '';
+  others.forEach(user => {
+    const color = USER_COLORS[user] || '#94a3b8';
+    const item = document.createElement('div');
+    item.className = 'chat-item';
+    item.innerHTML = `
+      <div class="ci-avatar" style="background:${color}">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
+      </div>
+      <div class="ci-info">
+        <div class="ci-name">${user}</div>
+        <div class="ci-last" id="last-msg-${sanitize(user)}">Loading…</div>
+      </div>
+      <div class="ci-right">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#94a3b8" stroke-width="2"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
+      </div>`;
+    item.onclick = () => openDMChat(user);
+    container.appendChild(item);
+  });
+  others.forEach(user => loadLastMessage(user));
+}
+
+async function loadLastMessage(partner) {
+  if (!sb) return;
+  const roomId = getDMRoomId(currentUser, partner);
+  const { data } = await sb.from('messages')
+    .select('content,created_at,type')
+    .eq('room_id', roomId)
+    .order('created_at', { ascending: false })
+    .limit(1);
+  if (data && data.length > 0) {
+    const el = document.getElementById('last-msg-' + sanitize(partner));
+    if (el) el.textContent = data[0].type === 'image' ? '📷 Image' : data[0].type === 'file' ? '📎 File' : (data[0].content || '');
+  } else {
+    const el = document.getElementById('last-msg-' + sanitize(partner));
+    if (el) el.textContent = 'No messages yet';
+  }
+}
+
+// ============================================================
+// CHAT ROOM - DM
+// ============================================================
+function openDMChat(partner) {
+  currentChatPartner = partner;
+  currentChatType = 'dm';
+  const color = USER_COLORS[partner] || '#94a3b8';
+  const avatar = document.getElementById('room-avatar');
+  avatar.style.background = color;
+  document.getElementById('room-name').textContent = partner;
+  hideAllPages();
+  document.getElementById('chat-room').style.display = 'flex';
+  document.getElementById('chat-room').style.flexDirection = 'column';
+  loadMessages();
+  subscribeToMessages();
+  deleteExpiredMessages();
+}
+
+function openGroupChat() {
+  currentChatPartner = 'GROUP';
+  currentChatType = 'group';
+  const avatar = document.getElementById('room-avatar');
+  avatar.style.background = '#7c3aed';
+  document.getElementById('room-name').textContent = 'Group Chat';
+  hideAllPages();
+  document.getElementById('chat-room').style.display = 'flex';
+  document.getElementById('chat-room').style.flexDirection = 'column';
+  loadMessages();
+  subscribeToMessages();
+  deleteExpiredMessages();
+}
+
+function getDMRoomId(a, b) { return [a, b].sort().join('__'); }
+function getRoomId() {
+  return currentChatType === 'group' ? 'GROUP_ROOM' : getDMRoomId(currentUser, currentChatPartner);
+}
+
+async function loadMessages() {
+  const area = document.getElementById('messages-area');
+  area.innerHTML = '';
+  if (!sb) { showDemoMessages(); return; }
+  const { data, error } = await sb.from('messages')
+    .select('*').eq('room_id', getRoomId()).order('created_at', { ascending: true });
+  if (error) { console.error(error); return; }
+  (data || []).forEach(msg => renderMessage(msg));
+  area.scrollTop = area.scrollHeight;
+}
+
+function renderMessage(msg) {
+  const area = document.getElementById('messages-area');
+  const isMine = msg.sender === currentUser;
+  const dt = new Date(msg.created_at);
+  const timeStr = dt.toLocaleString('en-GB', { day:'2-digit', month:'long', year:'numeric', hour:'2-digit', minute:'2-digit', hour12:false });
+
+  const row = document.createElement('div');
+  row.className = `msg-row ${isMine ? 'mine' : 'theirs'}`;
+  row.dataset.id = msg.id;
+  row.dataset.mine = isMine ? '1' : '0';
+
+  let inner = '';
+  if (!isMine && currentChatType === 'group') {
+    inner += `<div class="sender-name" style="color:${USER_COLORS[msg.sender] || '#64748b'}">${msg.sender}</div>`;
+  }
+
+  let bubbleContent = '';
+  if (msg.type === 'image') {
+    bubbleContent = `<img class="msg-img" src="${msg.content}" alt="image" onclick="window.open('${msg.content}','_blank')">`;
+  } else if (msg.type === 'file') {
+    bubbleContent = `<a class="msg-file" href="${msg.content}" target="_blank">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48"/></svg>
+      ${msg.file_name || 'File'}
+    </a>`;
+  } else {
+    bubbleContent = escHtml(msg.content || '');
+  }
+
+  inner += `<div class="msg-bubble${msg.starred ? ' starred' : ''}" id="bubble-${msg.id}">${bubbleContent}</div>`;
+  inner += `<div class="msg-meta">
+    <span class="msg-time">${timeStr}</span>
+    <button class="star-btn ${msg.starred ? 'starred' : ''}" onclick="toggleStar('${msg.id}',this)" title="Star">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="${msg.starred ? '#f59e0b' : 'none'}" stroke="${msg.starred ? '#f59e0b' : '#cbd5e1'}" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+    </button>
+  </div>`;
+
+  row.innerHTML = inner;
+
+  // Hold-to-unsend: long press or right-click
+  const bubble = row.querySelector('.msg-bubble');
+  bubble.addEventListener('contextmenu', e => { e.preventDefault(); showCtxMenu(e, msg.id, isMine, msg.starred); });
+  bubble.addEventListener('touchstart', e => {
+    holdTimer = setTimeout(() => showCtxMenu(e.touches[0], msg.id, isMine, msg.starred), 600);
+  }, { passive: true });
+  bubble.addEventListener('touchend', () => { clearTimeout(holdTimer); }, { passive: true });
+  bubble.addEventListener('touchmove', () => { clearTimeout(holdTimer); }, { passive: true });
+  bubble.addEventListener('mousedown', e => {
+    if (e.button === 0) holdTimer = setTimeout(() => showCtxMenu(e, msg.id, isMine, msg.starred), 600);
+  });
+  bubble.addEventListener('mouseup', () => clearTimeout(holdTimer));
+
+  area.appendChild(row);
+}
+
+// ============================================================
+// CONTEXT MENU
+// ============================================================
+function showCtxMenu(e, msgId, isMine, isStarred) {
+  ctxMsgId = msgId;
+  ctxMsgMine = isMine;
+  const menu = document.getElementById('ctx-menu');
+  const unsendBtn = document.getElementById('ctx-unsend');
+  const starBtn = document.getElementById('ctx-star');
+
+  unsendBtn.style.display = isMine ? 'flex' : 'none';
+  starBtn.querySelector('svg').setAttribute('fill', isStarred ? '#f59e0b' : 'none');
+  starBtn.querySelector('svg').setAttribute('stroke', isStarred ? '#f59e0b' : 'currentColor');
+  starBtn.childNodes[1].textContent = isStarred ? ' Unstar Message' : ' Star Message';
+
+  const x = Math.min(e.clientX || e.pageX, window.innerWidth - 160);
+  const y = Math.min(e.clientY || e.pageY, window.innerHeight - 120);
+  menu.style.left = x + 'px';
+  menu.style.top = y + 'px';
+  menu.style.display = 'block';
+  setTimeout(() => document.addEventListener('click', closeCtxMenu, { once: true }), 50);
+}
+
+function closeCtxMenu() {
+  document.getElementById('ctx-menu').style.display = 'none';
+}
+
+async function ctxUnsend() {
+  closeCtxMenu();
+  if (!ctxMsgId || !ctxMsgMine || !sb) return;
+  if (!confirm('Unsend this message?')) return;
+  await sb.from('messages').delete().eq('id', ctxMsgId);
+  const row = document.querySelector(`.msg-row[data-id="${ctxMsgId}"]`);
+  if (row) row.remove();
+  showToast('Message unsent');
+}
+
+async function ctxStar() {
+  closeCtxMenu();
+  if (!ctxMsgId || !sb) return;
+  const bubble = document.getElementById('bubble-' + ctxMsgId);
+  const starBtn = document.querySelector(`.msg-row[data-id="${ctxMsgId}"] .star-btn`);
+  if (!starBtn) return;
+  const isCurrentlyStarred = starBtn.classList.contains('starred');
+  const newVal = !isCurrentlyStarred;
+  starBtn.classList.toggle('starred', newVal);
+  if (bubble) bubble.classList.toggle('starred', newVal);
+  const svg = starBtn.querySelector('svg');
+  if (svg) { svg.setAttribute('fill', newVal ? '#f59e0b' : 'none'); svg.setAttribute('stroke', newVal ? '#f59e0b' : '#cbd5e1'); }
+  await sb.from('messages').update({ starred: newVal }).eq('id', ctxMsgId);
+}
+
+// ============================================================
+// SEND MESSAGE
+// ============================================================
+async function sendMessage(content, type, fileName) {
+  const input = document.getElementById('msg-input');
+  const text = content || input.value.trim();
+  if (!text && !content) return;
+  if (!sb) { showToast('Supabase not configured'); return; }
+
+  const msgObj = {
+    room_id: getRoomId(),
+    sender: currentUser,
+    content: text,
+    type: type || 'text',
+    file_name: fileName || null,
+    starred: false,
+    created_at: new Date().toISOString()
+  };
+
+  const { data, error } = await sb.from('messages').insert(msgObj).select().single();
+  if (error) { showToast('Error: ' + error.message); return; }
+  input.value = '';
+  renderMessage(data);
+  document.getElementById('messages-area').scrollTop = 999999;
+}
+
+function handleMsgKey(e) { if (e.key === 'Enter') sendMessage(); }
+
+async function toggleStar(id, btn) {
+  if (!sb) return;
+  const newVal = !btn.classList.contains('starred');
+  btn.classList.toggle('starred', newVal);
+  const svg = btn.querySelector('svg');
+  if (svg) { svg.setAttribute('fill', newVal ? '#f59e0b' : 'none'); svg.setAttribute('stroke', newVal ? '#f59e0b' : '#cbd5e1'); }
+  const bubble = document.getElementById('bubble-' + id);
+  if (bubble) bubble.classList.toggle('starred', newVal);
+  await sb.from('messages').update({ starred: newVal }).eq('id', id);
+}
+
+async function clearMessages() {
+  if (!confirm('Clear all messages in this chat?')) return;
+  if (!sb) return;
+  await sb.from('messages').delete().eq('room_id', getRoomId());
+  document.getElementById('messages-area').innerHTML = '';
+  showToast('Messages cleared');
+}
+
+async function deleteExpiredMessages() {
+  if (!sb) return;
+  const expiry = new Date(Date.now() - MESSAGE_EXPIRY_DAYS * 86400000).toISOString();
+  await sb.from('messages').delete().lt('created_at', expiry);
+}
+
+// ============================================================
+// FILE UPLOAD
+// ============================================================
+async function handleFileUpload(event) {
+  const file = event.target.files[0];
+  if (!file || !sb) return;
+  showToast('Uploading…');
+  const path = `uploads/${Date.now()}_${file.name}`;
+  const { error } = await sb.storage.from('chat-files').upload(path, file);
+  if (error) { showToast('Upload failed: ' + error.message); return; }
+  const { data: urlData } = sb.storage.from('chat-files').getPublicUrl(path);
+  const type = file.type.startsWith('image/') ? 'image' : 'file';
+  await sendMessage(urlData.publicUrl, type, file.name);
+  showToast('Uploaded!');
+  event.target.value = '';
+}
+
+// ============================================================
+// REALTIME
+// ============================================================
+function subscribeToMessages() {
+  if (realtimeChannel) realtimeChannel.unsubscribe();
+  if (!sb) return;
+  realtimeChannel = sb.channel('room:' + getRoomId())
+    .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'messages', filter: `room_id=eq.${getRoomId()}` }, payload => {
+      const msg = payload.new;
+      if (msg.sender !== currentUser) {
+        renderMessage(msg);
+        document.getElementById('messages-area').scrollTop = 999999;
+        playNotif();
+        showToast(`${msg.sender}: ${msg.type === 'text' ? (msg.content || '').slice(0,40) : '📎'}`);
+      }
+    })
+    .on('postgres_changes', { event: 'DELETE', schema: 'public', table: 'messages', filter: `room_id=eq.${getRoomId()}` }, payload => {
+      const row = document.querySelector(`.msg-row[data-id="${payload.old.id}"]`);
+      if (row) row.remove();
+    })
+    .on('broadcast', { event: 'typing' }, payload => {
+      if (payload.payload.user !== currentUser) {
+        document.getElementById('typing-indicator').textContent = payload.payload.user + ' is typing…';
+        clearTimeout(typingTimeout);
+        typingTimeout = setTimeout(() => { document.getElementById('typing-indicator').textContent = ''; }, 2000);
+      }
+    })
+    .subscribe();
+}
+
+function handleTyping() {
+  if (!sb || !realtimeChannel) return;
+  realtimeChannel.send({ type: 'broadcast', event: 'typing', payload: { user: currentUser } });
+}
+
+// ============================================================
+// MEDIA TAB
+// ============================================================
+async function renderMedia() {
+  const container = document.getElementById('media-tab-content');
+  container.innerHTML = '<div style="padding:20px;text-align:center;color:#94a3b8;">Loading starred content…</div>';
+  if (!sb) { container.innerHTML = '<div style="padding:20px;color:#94a3b8;">Connect Supabase to see media.</div>'; return; }
+
+  const { data } = await sb.from('messages').select('*').eq('starred', true).order('created_at', { ascending: false });
+  container.innerHTML = '';
+
+  const imgs  = (data || []).filter(m => m.type === 'image');
+  const texts = (data || []).filter(m => m.type === 'text');
+
+  if (imgs.length) {
+    const sec = document.createElement('div');
+    sec.className = 'media-section';
+    sec.innerHTML = '<h3>Starred Images</h3>';
+    const grid = document.createElement('div');
+    grid.className = 'media-grid';
+    imgs.forEach(m => {
+      grid.innerHTML += `<div class="media-thumb"><img src="${m.content}" onclick="window.open('${m.content}','_blank')"></div>`;
+    });
+    sec.appendChild(grid);
+    container.appendChild(sec);
+  }
+
+  if (texts.length) {
+    const sec = document.createElement('div');
+    sec.className = 'media-section';
+    sec.innerHTML = '<h3>Starred Messages</h3>';
+    texts.forEach(m => {
+      const dt = new Date(m.created_at).toLocaleString('en-GB', { day:'2-digit', month:'short', year:'numeric', hour:'2-digit', minute:'2-digit' });
+      sec.innerHTML += `<div class="starred-msg-item">
+        <div class="sm-from">From: ${m.sender} — ${m.room_id === 'GROUP_ROOM' ? 'Group' : 'DM'}</div>
+        <div class="sm-text">${escHtml(m.content)}</div>
+        <div class="sm-time">${dt}</div>
+      </div>`;
+    });
+    container.appendChild(sec);
+  }
+
+  if (!imgs.length && !texts.length) {
+    container.innerHTML = '<div style="padding:30px;text-align:center;color:#94a3b8;">No starred content yet.<br>Hold any message to star it.</div>';
+  }
+}
+
+// ============================================================
+// NOTIFICATIONS
+// ============================================================
+function showToast(msg) {
+  const t = document.getElementById('notif-toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 3000);
+}
+
+function playNotif() {
+  try {
+    const ctx = new (window.AudioContext || window.webkitAudioContext)();
+    const osc = ctx.createOscillator();
+    const gain = ctx.createGain();
+    osc.connect(gain); gain.connect(ctx.destination);
+    osc.frequency.setValueAtTime(880, ctx.currentTime);
+    osc.frequency.setValueAtTime(660, ctx.currentTime + 0.1);
+    gain.gain.setValueAtTime(0.3, ctx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.3);
+    osc.start(ctx.currentTime); osc.stop(ctx.currentTime + 0.3);
+  } catch(e) {}
+}
+
+if ('Notification' in window) Notification.requestPermission();
+
+// ============================================================
+// NAVIGATION
+// ============================================================
+function backToChatList() {
+  if (realtimeChannel) realtimeChannel.unsubscribe();
+  showChatList();
+}
+
+function hideAllPages() {
+  document.getElementById('login-page').style.display = 'none';
+  document.getElementById('chat-list-page').style.display = 'none';
+  document.getElementById('chat-room').style.display = 'none';
+}
+
+// ============================================================
+// UTILS
+// ============================================================
+function escHtml(str) {
+  return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+function sanitize(str) { return str.replace(/[^a-zA-Z0-9]/g,'_'); }
+
+function showDemoMessages() {
+  const demoMsgs = [
+    { id:'d1', sender: currentChatPartner || 'Mahdi Hasan', content:'Yoo', type:'text', starred:false, created_at: new Date(Date.now()-3600000).toISOString() },
+    { id:'d2', sender: currentChatPartner || 'Mahdi Hasan', content:'How are you?', type:'text', starred:false, created_at: new Date(Date.now()-3500000).toISOString() },
+    { id:'d3', sender: currentUser, content:"I'm good, how are you?", type:'text', starred:false, created_at: new Date(Date.now()-3400000).toISOString() },
+    { id:'d4', sender: currentUser, content:"Today's HW", type:'text', starred:false, created_at: new Date(Date.now()-3000000).toISOString() },
+  ];
+  demoMsgs.forEach(m => renderMessage(m));
+  document.getElementById('messages-area').scrollTop = 999999;
+  showToast('Demo mode — set up Supabase to enable real chat');
+}
+</script>
+
+<!--
+SUPABASE SETUP:
+1. Go to supabase.com and create a free project
+2. Run this SQL in the SQL editor:
+
+CREATE TABLE messages (
+  id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
+  room_id TEXT NOT NULL,
+  sender TEXT NOT NULL,
+  content TEXT,
+  type TEXT DEFAULT 'text',
+  file_name TEXT,
+  starred BOOLEAN DEFAULT false,
+  created_at TIMESTAMPTZ DEFAULT NOW()
+);
+ALTER TABLE messages ENABLE ROW LEVEL SECURITY;
+CREATE POLICY "Allow all" ON messages FOR ALL USING (true) WITH CHECK (true);
+
+-- Storage: Go to Storage, create bucket "chat-files" (public)
+
+3. Copy Project URL and anon key from Settings > API
+4. Replace SUPABASE_URL and SUPABASE_ANON_KEY at top of script
+-->
+</body>
+</html>
