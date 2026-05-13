@@ -526,6 +526,20 @@ function fireNotification(title, body) {
 // INIT
 // ============================================================
 window.addEventListener('DOMContentLoaded', async () => {
+    // Prevent app from closing on back button
+  history.pushState({ page: 1 }, "", "");
+
+  window.onpopstate = function () {
+    if (document.getElementById('chat-room').style.display === 'flex') {
+      backToChatList();
+      history.pushState({ page: 1 }, "", "");
+    } else if (document.getElementById('chat-list-page').style.display === 'flex') {
+      logOut();
+      history.pushState({ page: 1 }, "", "");
+    } else {
+      history.pushState({ page: 1 }, "", "");
+    }
+  };
   await registerSW();
   setupSecretZones();
   const { data: { session } } = await sb.auth.getSession();
