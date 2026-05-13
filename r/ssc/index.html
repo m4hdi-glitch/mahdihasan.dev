@@ -645,7 +645,10 @@ function showChatList() {
   document.getElementById('cl-user-avatar').style.background = color;
   showNotifBannerIfNeeded();
   switchTab('chats');
+  renderedMsgIds.clear();
+  subscribeGlobalNotifications();
 }
+
 
 function switchTab(tab) {
   document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
@@ -720,7 +723,6 @@ function openDMChat(partner) {
   document.getElementById('chat-room').style.display = 'flex';
   document.getElementById('chat-room').style.flexDirection = 'column';
   loadMessages();
-  subscribeToMessages();
   deleteExpiredMessages();
 }
 
@@ -734,7 +736,6 @@ function openGroupChatInTab() {
   document.getElementById('chat-room').style.display = 'flex';
   document.getElementById('chat-room').style.flexDirection = 'column';
   loadMessages();
-  subscribeToMessages();
   deleteExpiredMessages();
 }
 
@@ -900,6 +901,65 @@ function subscribeToMessages() {
       } else {
         setConnStatus('connecting');
       }
+    });
+}
+
+function subscribeGlobalNotifications() {
+
+  cleanupChannel();
+
+  realtimeChannel = sb
+    .channel('global-notifications')
+
+    .on(
+      'postgres_changes',
+      {
+        event: 'INSERT',
+        schema: 'public',
+        table: 'messages'
+      },
+
+      payload => {
+
+        const msg = payload.new;
+
+        if (!msg) return;
+
+        // Ignore own messages
+        if (msg.sender === currentUser) return;
+
+        // Check if user belongs in room
+        const belongs =
+          msg.room_id.includes(currentUser) ||
+          msg.room_id === 'GROUP_ROOM';
+
+        if (!belongs) return;
+
+        // Sound
+        playNotif();
+
+        // Toast
+        showToast(
+          `${msg.sender}: ${
+            msg.type === 'text'
+              ? msg.content.slice(0,40)
+              : '📎 File'
+          }`
+        );
+
+        // Browser notification
+        fireNotification(
+          msg.sender,
+          msg.type === 'text'
+            ? msg.content
+            : '📎 Sent a file'
+        );
+
+      }
+    )
+
+    .subscribe(status => {
+      console.log(status);
     });
 }
 
