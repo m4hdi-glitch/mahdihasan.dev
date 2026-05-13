@@ -294,12 +294,12 @@
     <div id="group-tab" class="hidden chat-scroll"></div>
     <div id="media-tab-content" class="hidden chat-scroll"></div>
     <div class="bottom-bar">
-      <button class="exit-btn secondary" style="flex:1;justify-content:center;" onclick="switchUser()">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
-        Switch User
-      </button>
-      <button class="exit-btn danger" style="flex:1;justify-content:center;" onclick="logOut()">
+      <button class="exit-btn danger" style="flex:1;justify-content:center;" onclick="switchUser()">
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+        Log Out
+      </button>
+      <button class="exit-btn secondary" style="flex:1;justify-content:center;" onclick="logOut()">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><path d="M18 8h1a4 4 0 0 1 0 8h-1"/><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"/><line x1="6" y1="1" x2="6" y2="4"/><line x1="10" y1="1" x2="10" y2="4"/><line x1="14" y1="1" x2="14" y2="4"/></svg>
         Exit
       </button>
     </div>
@@ -337,12 +337,12 @@
       </button>
     </div>
     <div class="bottom-bar">
-      <button class="exit-btn secondary" style="flex:1;justify-content:center;" onclick="switchUser()">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
-        Switch User
-      </button>
-      <button class="exit-btn danger" style="flex:1;justify-content:center;" onclick="logOut()">
+      <button class="exit-btn danger" style="flex:1;justify-content:center;" onclick="switchUser()">
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+        Log Out
+      </button>
+      <button class="exit-btn secondary" style="flex:1;justify-content:center;" onclick="logOut()">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><path d="M18 8h1a4 4 0 0 1 0 8h-1"/><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"/><line x1="6" y1="1" x2="6" y2="4"/><line x1="10" y1="1" x2="10" y2="4"/><line x1="14" y1="1" x2="14" y2="4"/></svg>
         Exit
       </button>
     </div>
@@ -561,7 +561,12 @@ function unlockApp() {
   document.getElementById('cover-page').style.display = 'none';
   document.getElementById('app').style.display = 'flex';
   document.getElementById('app').style.flexDirection = 'column';
-  showLoginPage();
+  // If user exited without logging out, resume directly
+  if (currentUser) {
+    showChatList();
+  } else {
+    showLoginPage();
+  }
 }
 
 // ============================================================
@@ -608,28 +613,28 @@ async function checkUserPw() {
   showChatList();
 }
 
-// switchUser: go back to login page WITHOUT signing out Supabase
-// So when they pick the same user again, no password needed (session still active)
-function switchUser() {
-  cleanupChannel();
-  renderedMsgIds.clear();
-  chatMeta = {};
-  currentChatPartner = null;
-  hideAllPages();
-  showLoginPage();
-}
-
-async function logOut() {
-  // Full exit: sign out of Supabase + go back to cover page
+// LOGOUT: signs out of Supabase — password required next time
+async function switchUser() {
   await sb.auth.signOut();
   cleanupChannel();
   currentUser = null; currentUserEmail = null; currentChatPartner = null;
+  renderedMsgIds.clear(); chatMeta = {};
+  hideAllPages();
+  showLoginPage();
+  setConnStatus('disconnected');
+}
+
+// EXIT: just hides the app — session stays alive, no password needed to re-enter
+function logOut() {
+  cleanupChannel();
+  currentChatPartner = null;
   renderedMsgIds.clear(); chatMeta = {};
   hideAllPages();
   document.getElementById('app').style.display = 'none';
   document.getElementById('cover-page').style.display = 'block';
   setConnStatus('disconnected');
   tapSequence = [];
+  // currentUser stays set — so on next unlock, auto-resume without password
 }
 
 function exitToMain() {
