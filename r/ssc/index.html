@@ -183,7 +183,9 @@
   .hidden { display: none !important; }
   .flex { display: flex !important; }
 
-  .bottom-bar { padding: 8px 16px 12px; border-top: 1px solid #e2e8f0; background: #fff; }
+  .bottom-bar { padding: 8px 16px 12px; border-top: 1px solid #e2e8f0; background: #fff; display: flex; gap: 8px; }
+  .exit-btn.secondary { background: #64748b; }
+  .exit-btn.danger { background: #b91c1c; }
 
   #notif-banner { display: none; background: #fef3c7; border: 1px solid #f59e0b; border-radius: 8px; margin: 8px 12px; padding: 10px 14px; font-size: 12px; color: #92400e; align-items: center; gap: 8px; }
   #notif-banner button { background: #f59e0b; color: #fff; border: none; border-radius: 6px; padding: 4px 10px; cursor: pointer; font-size: 11px; white-space: nowrap; }
@@ -292,9 +294,13 @@
     <div id="group-tab" class="hidden chat-scroll"></div>
     <div id="media-tab-content" class="hidden chat-scroll"></div>
     <div class="bottom-bar">
-      <button class="exit-btn" onclick="logOut()">
+      <button class="exit-btn secondary" style="flex:1;justify-content:center;" onclick="switchUser()">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
+        Switch User
+      </button>
+      <button class="exit-btn danger" style="flex:1;justify-content:center;" onclick="logOut()">
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
-        LOG OUT
+        Exit
       </button>
     </div>
   </div>
@@ -331,9 +337,13 @@
       </button>
     </div>
     <div class="bottom-bar">
-      <button class="exit-btn" onclick="logOut()">
+      <button class="exit-btn secondary" style="flex:1;justify-content:center;" onclick="switchUser()">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
+        Switch User
+      </button>
+      <button class="exit-btn danger" style="flex:1;justify-content:center;" onclick="logOut()">
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
-        LOG OUT
+        Exit
       </button>
     </div>
   </div>
@@ -559,9 +569,21 @@ function unlockApp() {
 // ============================================================
 function showLoginPage() { hideAllPages(); document.getElementById('login-page').style.display = 'flex'; }
 
-let selectedUserName = '';
-function selectUser(name) {
+async function selectUser(name) {
   selectedUserName = name;
+  const email = USER_EMAILS[name];
+
+  // Check if there's already an active session for this user — skip password
+  const { data: { session } } = await sb.auth.getSession();
+  if (session && session.user.email === email) {
+    currentUser = name;
+    currentUserEmail = email;
+    document.getElementById('user-pw-modal').style.display = 'none';
+    showChatList();
+    return;
+  }
+
+  // Otherwise ask for password
   document.getElementById('upw-title').textContent = `Password for ${name}`;
   document.getElementById('upw-input').value = '';
   document.getElementById('upw-error').textContent = '';
@@ -586,7 +608,19 @@ async function checkUserPw() {
   showChatList();
 }
 
+// switchUser: go back to login page WITHOUT signing out Supabase
+// So when they pick the same user again, no password needed (session still active)
+function switchUser() {
+  cleanupChannel();
+  renderedMsgIds.clear();
+  chatMeta = {};
+  currentChatPartner = null;
+  hideAllPages();
+  showLoginPage();
+}
+
 async function logOut() {
+  // Full exit: sign out of Supabase + go back to cover page
   await sb.auth.signOut();
   cleanupChannel();
   currentUser = null; currentUserEmail = null; currentChatPartner = null;
