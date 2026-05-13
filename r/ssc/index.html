@@ -645,6 +645,7 @@ function showChatList() {
   showNotifBannerIfNeeded();
   switchTab('chats');
   subscribeGlobalNotifications();
+  history.pushState({ page: 'chat-list' }, '');
 }
 
 function switchTab(tab) {
@@ -797,6 +798,7 @@ function openDMChat(partner) {
   loadMessages();
   deleteExpiredMessages();
   subscribeToMessages();
+  history.pushState({ page: 'chat-room' }, '');
 }
 
 function openGroupChatInTab() {
@@ -812,6 +814,7 @@ function openGroupChatInTab() {
   loadMessages();
   deleteExpiredMessages();
   subscribeToMessages();
+  history.pushState({ page: 'group-room' }, '');
 }
 
 function getDMRoomId(a, b) { return [a, b].sort().join('__'); }
@@ -1247,6 +1250,26 @@ function hideAllPages() {
   document.getElementById('chat-room').style.display = 'none';
 }
 
+ // ============================================================
+// MOBILE BACK BUTTON HANDLER
+// ============================================================
+
+window.addEventListener('popstate', function () {
+
+  // If inside chat room → go back to chat list
+  if (
+    document.getElementById('chat-room').style.display === 'flex'
+  ) {
+
+    backToChatList();
+
+    // Push state again so browser stays inside app
+    history.pushState({ page: 'chat-list' }, '');
+
+    return;
+  }
+
+});
 // ============================================================
 // UTILS
 // ============================================================
