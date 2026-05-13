@@ -1284,6 +1284,17 @@ function backToChatList() {
   cleanupChannel();
   renderedMsgIds.clear();
   currentChatPartner = null;
+  currentChatType = 'dm';
+  
+  // Reset typing indicator
+  const typingEl = document.getElementById('typing-indicator');
+  if (typingEl) typingEl.innerHTML = '';
+  
+  // Reset room typing header
+  const roomTyping = document.getElementById('room-typing');
+  if (roomTyping) roomTyping.textContent = '';
+  
+  hideAllPages();
   showChatList();
 }
 
