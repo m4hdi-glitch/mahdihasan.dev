@@ -886,7 +886,7 @@ function buildReportCardHtml(reportData) {
   // Put your uploaded signature image URL here
   const signatureUrl =
     schoolSettings.signature_url ||
-    'https://your-school-signature.png';
+    'https://mahdihasan.dev/r/signature.png';
 
   return `
   <div class="rc-page">
