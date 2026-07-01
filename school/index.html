@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>School Result Portal</title>
+
+<!-- Supabase JS client (loaded before app.js so window.supabase is ready) -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js" defer></script>
+<!-- jsPDF for report card PDF generation -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
+<style>
+  /* ---------- Basic reset ---------- */
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font-family: -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+    background: #f5f5f5;
+    color: #222;
+    font-size: 15px;
+    line-height: 1.5;
+  }
+  a { color: #2563eb; }
+  button {
+    font-family: inherit;
+    font-size: 14px;
+    cursor: pointer;
+  }
+  input, select, textarea {
+    font-family: inherit;
+    font-size: 14px;
+  }
+
+  /* ---------- Layout ---------- */
+  #app-header {
+    background: #ffffff;
+    border-bottom: 1px solid #ddd;
+    padding: 10px 16px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+  }
+  #app-header img.logo {
+    height: 40px;
+    width: 40px;
+    object-fit: contain;
+    border-radius: 4px;
+    background: #eee;
+  }
+  #app-header .school-name {
+    font-weight: 600;
+    font-size: 16px;
+  }
+  #app-header .role-badge {
+    margin-left: auto;
+    font-size: 13px;
+    color: #555;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  #app-header button.logout-btn {
+    background: #f3f4f6;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    padding: 6px 10px;
+  }
+
+  #app-container {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 16px;
+  }
+
+  .card {
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    padding: 16px;
+    margin-bottom: 16px;
+  }
+  .card h2 {
+    margin-top: 0;
+    font-size: 17px;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 8px;
+  }
+  .card h3 {
+    font-size: 15px;
+    margin-top: 0;
+  }
+
+  /* ---------- Buttons ---------- */
+  .btn {
+    background: #2563eb;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    padding: 8px 14px;
+    font-size: 14px;
+  }
+  .btn:hover { background: #1d4ed8; }
+  .btn.secondary {
+    background: #fff;
+    color: #333;
+    border: 1px solid #ccc;
+  }
+  .btn.secondary:hover { background: #f3f4f6; }
+  .btn.danger {
+    background: #fff;
+    color: #c1121f;
+    border: 1px solid #e6b0b4;
+  }
+  .btn.danger:hover { background: #fdecec; }
+  .btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+  .btn-row {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin: 10px 0;
+  }
+
+  /* ---------- Forms ---------- */
+  .form-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 10px;
+    align-items: flex-end;
+  }
+  .form-field {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+  .form-field label {
+    font-size: 12px;
+    color: #555;
+  }
+  .form-field input, .form-field select {
+    padding: 7px 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    min-width: 160px;
+  }
+
+  /* ---------- Tables ---------- */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+  }
+  th, td {
+    border: 1px solid #ddd;
+    padding: 7px 9px;
+    text-align: left;
+  }
+  th {
+    background: #f3f4f6;
+    font-weight: 600;
+  }
+  tr:nth-child(even) td { background: #fafafa; }
+  .table-wrap { overflow-x: auto; }
+  td input[type="number"] {
+    width: 70px;
+    padding: 4px 6px;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+  }
+
+  /* ---------- Tabs ---------- */
+  .tabs {
+    display: flex;
+    gap: 4px;
+    border-bottom: 1px solid #ddd;
+    margin-bottom: 16px;
+    flex-wrap: wrap;
+  }
+  .tab-btn {
+    background: none;
+    border: none;
+    padding: 9px 14px;
+    border-bottom: 2px solid transparent;
+    color: #555;
+  }
+  .tab-btn.active {
+    border-bottom: 2px solid #2563eb;
+    color: #2563eb;
+    font-weight: 600;
+  }
+
+  /* ---------- Login ---------- */
+  #login-screen {
+    max-width: 360px;
+    margin: 60px auto;
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    padding: 24px;
+    text-align: center;
+  }
+  #login-screen img.logo {
+    height: 56px;
+    width: 56px;
+    object-fit: contain;
+    border-radius: 6px;
+    background: #eee;
+    margin-bottom: 8px;
+  }
+  #login-screen h1 {
+    font-size: 18px;
+    margin: 6px 0 20px;
+  }
+  #login-screen .form-field {
+    text-align: left;
+    margin-bottom: 12px;
+  }
+  #login-screen input {
+    width: 100%;
+    padding: 9px 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+  #login-screen .btn { width: 100%; padding: 10px; margin-top: 6px; }
+  #login-error {
+    color: #c1121f;
+    font-size: 13px;
+    margin-top: 10px;
+    min-height: 16px;
+  }
+
+  /* ---------- Utility ---------- */
+  .muted { color: #777; font-size: 13px; }
+  .small { font-size: 12px; }
+  .hidden { display: none !important; }
+  .flex-between {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .badge {
+    display: inline-block;
+    background: #eef2ff;
+    color: #3730a3;
+    border-radius: 3px;
+    padding: 2px 7px;
+    font-size: 12px;
+  }
+  .status-msg {
+    font-size: 13px;
+    padding: 8px 10px;
+    border-radius: 4px;
+    margin: 8px 0;
+  }
+  .status-msg.ok { background: #ecfdf3; color: #067647; border: 1px solid #b7e4c7; }
+  .status-msg.err { background: #fdecec; color: #c1121f; border: 1px solid #e6b0b4; }
+
+  /* ---------- Report card print area (hidden, used for PDF) ---------- */
+  #report-render-area {
+    position: fixed;
+    left: -9999px;
+    top: 0;
+    width: 700px;
+    background: #fff;
+  }
+  .rc-page {
+    width: 700px;
+    padding: 30px 34px;
+    border: 2px solid #333;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+  }
+  .rc-header {
+    text-align: center;
+    border-bottom: 2px solid #333;
+    padding-bottom: 12px;
+    margin-bottom: 14px;
+  }
+  .rc-header img {
+    height: 60px;
+    width: 60px;
+    object-fit: contain;
+    margin-bottom: 6px;
+  }
+  .rc-header .rc-school-name {
+    font-size: 20px;
+    font-weight: bold;
+  }
+  .rc-header .rc-title {
+    font-size: 14px;
+    letter-spacing: 2px;
+    margin-top: 4px;
+    color: #555;
+  }
+  .rc-meta {
+    display: flex;
+    justify-content: space-between;
+    font-size: 13px;
+    margin-bottom: 14px;
+  }
+  .rc-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+    margin-bottom: 14px;
+  }
+  .rc-table th, .rc-table td {
+    border: 1px solid #999;
+    padding: 6px 8px;
+  }
+  .rc-table th { background: #f0f0f0; }
+  .rc-comment-box {
+    border: 1px solid #999;
+    padding: 8px 10px;
+    font-size: 13px;
+    min-height: 50px;
+    margin-bottom: 20px;
+  }
+  .rc-sign-row {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 40px;
+    font-size: 12px;
+  }
+  .rc-sign-row div { text-align: center; width: 45%; border-top: 1px solid #333; padding-top: 4px; }
+  .rc-footer {
+    text-align: center;
+    font-size: 11px;
+    color: #777;
+    margin-top: 14px;
+  }
+
+  @media (max-width: 640px) {
+    .form-field input, .form-field select { min-width: 130px; }
+    #app-header .school-name { font-size: 14px; }
+    .card { padding: 12px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ============ SETUP NEEDED SCREEN (shown if credentials are missing in app.js) ============ -->
+<div id="config-screen" class="hidden">
+  <div id="login-screen">
+    <h1>Setup needed</h1>
+    <p class="muted small">
+      This app needs your Supabase project's URL and anon key. Open <code>app.js</code>,
+      find <code>SUPABASE_URL</code> and <code>SUPABASE_ANON_KEY</code> near the top,
+      and fill in your project's values. Both are on your Supabase dashboard under
+      Project Settings &rarr; API.
+    </p>
+    <div id="config-error" class="status-msg err hidden"></div>
+  </div>
+</div>
+
+<!-- ============ LOGIN SCREEN ============ -->
+<div id="login-wrap" class="hidden">
+  <div id="login-screen">
+    <img class="logo" id="login-logo" src="" alt="School logo">
+    <h1 id="login-school-name">School Result Portal</h1>
+    <div class="form-field">
+      <label for="login-email">Email</label>
+      <input id="login-email" type="email" placeholder="you@school.com">
+    </div>
+    <div class="form-field">
+      <label for="login-password">Password</label>
+      <input id="login-password" type="password" placeholder="Password">
+    </div>
+    <button class="btn" onclick="doLogin()">Log in</button>
+    <div id="login-error" class="status-msg err hidden"></div>
+    <p class="muted small" style="margin-top:14px;">Accounts are created by the school admin.</p>
+  </div>
+</div>
+
+<!-- ============ MAIN APP ============ -->
+<div id="app-wrap" class="hidden">
+  <header id="app-header">
+    <img class="logo" id="header-logo" src="" alt="School logo">
+    <span class="school-name" id="header-school-name">School Result Portal</span>
+    <span class="role-badge">
+      <span id="header-user-name"></span>
+      <button class="logout-btn" onclick="doLogout()">Log out</button>
+    </span>
+  </header>
+
+  <div id="app-container">
+    <div id="status-area"></div>
+
+    <!-- Admin panel -->
+    <div id="admin-panel" class="hidden"></div>
+
+    <!-- Teacher panel -->
+    <div id="teacher-panel" class="hidden"></div>
+  </div>
+</div>
+
+<!-- Hidden render area used to build report card HTML before turning into PDF -->
+<div id="report-render-area"></div>
+
+<script src="app.js" defer></script>
+</body>
+</html>
