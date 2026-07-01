@@ -839,47 +839,122 @@ async function fetchStudentReportData(studentId) {
 }
 
 function buildReportCardHtml(reportData) {
-  const { student, grade, subjects, marksBySubject, commentText } = reportData;
-  const logo = schoolSettings.logo_url || fallbackLogoDataUri();
-  const schoolName = schoolSettings.school_name || 'School';
-  const principal = schoolSettings.principal_name || 'Principal';
-  const footer = schoolSettings.report_footer || '';
+  const { student, grade, subjects, marksBySubject } = reportData;
 
-  const rows = subjects.map(s => {
-    const mark = marksBySubject[s.id];
-    return `<tr>
-      <td>${escapeHtml(s.name)}</td>
-      <td>${mark != null ? mark : '-'}</td>
-      <td>${mark != null ? letterGrade(mark) : '-'}</td>
-    </tr>`;
+  const schoolName = schoolSettings.school_name || 'School Name';
+  const logo = schoolSettings.logo_url || fallbackLogoDataUri();
+
+  // GPA Calculation
+  let totalMarks = 0;
+  let count = 0;
+
+  const rows = subjects.map(subject => {
+    const mark = Number(marksBySubject[subject.id] || 0);
+
+    totalMarks += mark;
+    count++;
+
+    let gpa = 0;
+
+    if (mark >= 90) gpa = 4.0;
+    else if (mark >= 80) gpa = 3.5;
+    else if (mark >= 70) gpa = 3.0;
+    else if (mark >= 60) gpa = 2.5;
+    else if (mark >= 50) gpa = 2.0;
+    else gpa = 0;
+
+    return `
+      <tr>
+        <td>${escapeHtml(subject.name)}</td>
+        <td>${mark}</td>
+        <td>${gpa.toFixed(1)}</td>
+      </tr>
+    `;
   }).join('');
+
+  const average = count ? totalMarks / count : 0;
+
+  let overallGPA = 0;
+  if (average >= 90) overallGPA = 4.0;
+  else if (average >= 80) overallGPA = 3.5;
+  else if (average >= 70) overallGPA = 3.0;
+  else if (average >= 60) overallGPA = 2.5;
+  else if (average >= 50) overallGPA = 2.0;
+
+  const generatedDate = new Date().toLocaleDateString();
+
+  // Put your uploaded signature image URL here
+  const signatureUrl =
+    schoolSettings.signature_url ||
+    'https://your-school-signature.png';
 
   return `
   <div class="rc-page">
-    <div class="rc-header">
-      <img src="${logo}" onerror="this.style.display='none'">
-      <div class="rc-school-name">${escapeHtml(schoolName)}</div>
-      <div class="rc-title">REPORT CARD</div>
-    </div>
-    <div class="rc-meta">
-      <div><strong>Student:</strong> ${escapeHtml(student.name)}</div>
-      <div><strong>Code:</strong> ${escapeHtml(student.student_code)}</div>
-      <div><strong>Grade:</strong> ${grade ? escapeHtml(grade.name) : '-'}</div>
-    </div>
-    <table class="rc-table">
-      <tr><th>Subject</th><th>Mark</th><th>Grade</th></tr>
-      ${rows || '<tr><td colspan="3">No marks recorded yet.</td></tr>'}
-    </table>
-    <div><strong>Teacher Comment</strong></div>
-    <div class="rc-comment-box">${escapeHtml(commentText)}</div>
-    <div class="rc-sign-row">
-      <div>Class Teacher Signature</div>
-      <div>${escapeHtml(principal)} — Principal Signature</div>
-    </div>
-    <div class="rc-footer">${escapeHtml(footer)}</div>
-  </div>`;
-}
 
+    <div style="text-align:center;">
+      <h1 style="margin:0;">
+        ${escapeHtml(schoolName)}
+      </h1>
+
+      <img
+        src="${logo}"
+        style="height:90px;margin:10px 0;"
+      />
+
+      <h2 style="margin:5px 0;">
+        Academic Transcript
+      </h2>
+
+      <h3 style="margin:5px 0;color:#666;">
+        Half Yearly Term
+      </h3>
+    </div>
+
+    <div style="margin-top:20px;">
+      <strong>Student:</strong> ${escapeHtml(student.name)}<br>
+      <strong>Student ID:</strong> ${escapeHtml(student.student_code)}<br>
+      <strong>Grade:</strong> ${escapeHtml(grade?.name || '')}
+    </div>
+
+    <table class="rc-table" style="margin-top:20px;">
+      <tr>
+        <th>Subject</th>
+        <th>Marks</th>
+        <th>GPA</th>
+      </tr>
+
+      ${rows}
+
+      <tr style="font-weight:bold;">
+        <td colspan="2">Overall GPA</td>
+        <td>${overallGPA.toFixed(2)}</td>
+      </tr>
+    </table>
+
+    <div style="margin-top:50px;text-align:right;">
+      <img
+        src="${signatureUrl}"
+        style="height:70px;"
+      />
+      <div>
+        Principal Signature
+      </div>
+    </div>
+
+    <div
+      style="
+        margin-top:40px;
+        text-align:center;
+        color:#666;
+        font-size:12px;
+      "
+    >
+      Generated on: ${generatedDate}
+    </div>
+
+  </div>
+  `;
+}
 function escapeHtml(str) {
   if (str == null) return '';
   return String(str)
