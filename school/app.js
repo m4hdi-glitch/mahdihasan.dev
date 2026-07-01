@@ -85,7 +85,7 @@ let schoolSettings = {};   // key -> value
 // access control comes from the Row Level Security policies in setup.sql.
 // Find both under: Supabase dashboard -> Project Settings -> API
 // ---------------------------------------------------------------------
- const SUPABASE_URL = 'https://vhferhuwbtfqekeyymow.supabase.co';
+const SUPABASE_URL = 'https://vhferhuwbtfqekeyymow.supabase.co';
 const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZoZmVyaHV3YnRmcWVrZXl5bW93Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODI4NzgxNDcsImV4cCI6MjA5ODQ1NDE0N30.8RYwVnsc2mtncJ3_4eES_u-_0hXgsbQC3t5qttT_JBM';
 
 
@@ -887,6 +887,54 @@ function escapeHtml(str) {
     .replace(/"/g, '&quot;').replace(/'/g, '&#039;');
 }
 
+/* ---------------------------------------------------------------------
+   PDF helpers: jsPDF's .html() is unreliable when called repeatedly on
+   the same doc across a loop with addPage() — later pages frequently
+   come out blank or duplicate the first page. The reliable pattern is:
+   render EACH page as its own single-page PDF, then merge all of them
+   together with pdf-lib. This is what the "Generate all" buttons use.
+   --------------------------------------------------------------------- */
+
+// Renders one HTML node into a brand-new single-page PDF and returns its bytes.
+async function renderHtmlToPdfBytes(htmlNode) {
+  const { jsPDF } = window.jspdf;
+  const doc = new jsPDF('p', 'pt', 'a4');
+  await doc.html(htmlNode, {
+    x: 20, y: 20,
+    html2canvas: { scale: 0.8 }
+  });
+  return doc.output('arraybuffer');
+}
+
+// Merges an array of single-page PDF byte buffers into one PDF and triggers a download.
+async function mergePdfBuffersAndDownload(pdfBuffers, filename) {
+  if (!window.PDFLib) {
+    alert('pdf-lib failed to load. Check your internet connection or script URL.');
+    return;
+  }
+
+  const { PDFDocument } = window.PDFLib;
+
+  const mergedPdf = await PDFDocument.create();
+
+  for (const buffer of pdfBuffers) {
+    const src = await PDFDocument.load(buffer);
+    const copiedPages = await mergedPdf.copyPages(src, src.getPageIndices());
+    copiedPages.forEach(page => mergedPdf.addPage(page));
+  }
+
+  const mergedBytes = await mergedPdf.save();
+  const blob = new Blob([mergedBytes], { type: 'application/pdf' });
+
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = filename;
+  a.click();
+
+  URL.revokeObjectURL(url);
+}
+
 async function generateSingleReportCard() {
   const studentId = document.getElementById('pdf-student-select').value;
   const progress = document.getElementById('pdf-progress');
@@ -917,33 +965,32 @@ async function generateGradeReportCards() {
 
   if (!students.length) { progress.textContent = 'No students in this grade.'; return; }
 
-  const { jsPDF } = window.jspdf;
-  const doc = new jsPDF('p', 'pt', 'a4');
   const renderArea = document.getElementById('report-render-area');
+  const pdfBuffers = [];
 
   for (let i = 0; i < students.length; i++) {
     progress.textContent = `Generating ${i + 1} of ${students.length}: ${students[i].name}...`;
     const reportData = await fetchStudentReportData(students[i].id);
     renderArea.innerHTML = buildReportCardHtml(reportData);
-    if (i > 0) doc.addPage();
-    await doc.html(renderArea.firstElementChild, {
-      x: 20, y: 20,
-      html2canvas: { scale: 0.8 }
-    });
+    const bytes = await renderHtmlToPdfBytes(renderArea.firstElementChild);
+    pdfBuffers.push(bytes);
   }
   renderArea.innerHTML = '';
-  doc.save((grade ? grade.name.replace(/\s+/g, '') : 'Grade') + '_ReportCards.pdf');
-  progress.textContent = 'Done: all report cards for ' + (grade ? grade.name : 'grade') + '.';
+
+  progress.textContent = 'Combining into one file...';
+  await mergePdfBuffersAndDownload(
+    pdfBuffers,
+    (grade ? grade.name.replace(/\s+/g, '') : 'Grade') + '_ReportCards.pdf'
+  );
+  progress.textContent = `Done: ${students.length} report cards for ` + (grade ? grade.name : 'grade') + '.';
 }
 
 async function generateInternalMarksheet() {
   const progress = document.getElementById('pdf-progress');
   progress.textContent = 'Generating internal marksheet...';
 
-  const { jsPDF } = window.jspdf;
-  const doc = new jsPDF('p', 'pt', 'a4');
   const renderArea = document.getElementById('report-render-area');
-  let first = true;
+  const pdfBuffers = [];
 
   for (const grade of adminCache.grades) {
     const students = adminCache.students.filter(s => s.grade_id === grade.id);
@@ -978,13 +1025,19 @@ async function generateInternalMarksheet() {
       </div>`;
 
     renderArea.innerHTML = html;
-    if (!first) doc.addPage();
-    first = false;
-    await doc.html(renderArea.firstElementChild, { x: 20, y: 20, html2canvas: { scale: 0.8 } });
+    const bytes = await renderHtmlToPdfBytes(renderArea.firstElementChild);
+    pdfBuffers.push(bytes);
   }
 
   renderArea.innerHTML = '';
-  doc.save('Internal_Marksheet.pdf');
+
+  if (!pdfBuffers.length) {
+    progress.textContent = 'No grades with both students and subjects set up yet.';
+    return;
+  }
+
+  progress.textContent = 'Combining into one file...';
+  await mergePdfBuffersAndDownload(pdfBuffers, 'Internal_Marksheet.pdf');
   progress.textContent = 'Done: Internal_Marksheet.pdf';
 }
 
@@ -1151,9 +1204,8 @@ async function teacherGenerateGradeReportCards() {
   const subjectIds = (allGradeSubjects || []).map(r => r.subject_id);
   const { data: allSubjects } = await db.from('subjects').select('*').in('id', subjectIds.length ? subjectIds : [-1]);
 
-  const { jsPDF } = window.jspdf;
-  const doc = new jsPDF('p', 'pt', 'a4');
   const renderArea = document.getElementById('report-render-area');
+  const pdfBuffers = [];
 
   for (let i = 0; i < students.length; i++) {
     progress.textContent = `Generating ${i + 1} of ${students.length}: ${students[i].name}...`;
@@ -1167,11 +1219,16 @@ async function teacherGenerateGradeReportCards() {
 
     const reportData = { student, grade, subjects: allSubjects || [], marksBySubject, commentText };
     renderArea.innerHTML = buildReportCardHtml(reportData);
-    if (i > 0) doc.addPage();
-    await doc.html(renderArea.firstElementChild, { x: 20, y: 20, html2canvas: { scale: 0.8 } });
+    const bytes = await renderHtmlToPdfBytes(renderArea.firstElementChild);
+    pdfBuffers.push(bytes);
   }
 
   renderArea.innerHTML = '';
-  doc.save((grade ? grade.name.replace(/\s+/g, '') : 'Grade') + '_ReportCards.pdf');
-  progress.textContent = 'Done: all report cards for ' + (grade ? grade.name : 'grade') + '.';
+
+  progress.textContent = 'Combining into one file...';
+  await mergePdfBuffersAndDownload(
+    pdfBuffers,
+    (grade ? grade.name.replace(/\s+/g, '') : 'Grade') + '_ReportCards.pdf'
+  );
+  progress.textContent = `Done: ${students.length} report cards for ` + (grade ? grade.name : 'grade') + '.';
 }
