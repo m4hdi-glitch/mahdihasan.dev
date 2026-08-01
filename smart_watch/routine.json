@@ -1,15 +1,17 @@
 {
   "weekday": [
-    {"startHour": 21, "startMin": 0,  "endHour": 21, "endMin": 45, "name": "BANGLA"},
-    {"startHour": 21, "startMin": 45, "endHour": 22, "endMin": 0,  "name": "BREAK"},
-    {"startHour": 22, "startMin": 0,  "endHour": 22, "endMin": 45, "name": "ENGLISH"},
-    {"startHour": 22, "startMin": 45, "endHour": 23, "endMin": 0,  "name": "MATH"},
-    {"startHour": 23, "startMin": 0,  "endHour": 23, "endMin": 15, "name": "RECESS"},
+    {"startHour": 19, "startMin": 20, "endHour": 21, "endMin": 0, "name": "PROJECT Time!"},
+    {"startHour": 21, "startMin": 0, "endHour": 21, "endMin": 45, "name": "BANGLA"},
+    {"startHour": 21, "startMin": 45, "endHour": 22, "endMin": 0, "name": "BREAK"},
+    {"startHour": 22, "startMin": 0, "endHour": 22, "endMin": 45, "name": "ENGLISH"},
+    {"startHour": 22, "startMin": 45, "endHour": 23, "endMin": 0, "name": "MATH"},
+    {"startHour": 23, "startMin": 0, "endHour": 23, "endMin": 15, "name": "RECESS"},
     {"startHour": 23, "startMin": 15, "endHour": 23, "endMin": 30, "name": "PHYSICS"},
     {"startHour": 23, "startMin": 30, "endHour": 23, "endMin": 59, "name": "HISTORY"}
   ],
   "saturday": [
-    {"startHour": 21, "startMin": 0,  "endHour": 22, "endMin": 0,  "name": "MATH"},
-    {"startHour": 22, "startMin": 0,  "endHour": 23, "endMin": 59, "name": "ENGLISH"}
+    {"startHour": 19, "startMin": 20, "endHour": 21, "endMin": 0, "name": "PROJECT Time!"},
+    {"startHour": 21, "startMin": 0, "endHour": 22, "endMin": 0, "name": "MATH"},
+    {"startHour": 22, "startMin": 0, "endHour": 23, "endMin": 59, "name": "ENGLISH"}
   ]
 }
