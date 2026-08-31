@@ -1,17 +1,57 @@
 {
-  "weekday": [
-    {"startHour": 19, "startMin": 20, "endHour": 21, "endMin": 0, "name": "PROJECT Time!"},
-    {"startHour": 21, "startMin": 0, "endHour": 21, "endMin": 45, "name": "BANGLA"},
-    {"startHour": 21, "startMin": 45, "endHour": 22, "endMin": 0, "name": "BREAK"},
-    {"startHour": 22, "startMin": 0, "endHour": 22, "endMin": 45, "name": "ENGLISH"},
-    {"startHour": 22, "startMin": 45, "endHour": 23, "endMin": 0, "name": "MATH"},
-    {"startHour": 23, "startMin": 0, "endHour": 23, "endMin": 15, "name": "RECESS"},
-    {"startHour": 23, "startMin": 15, "endHour": 23, "endMin": 30, "name": "PHYSICS"},
-    {"startHour": 23, "startMin": 30, "endHour": 23, "endMin": 59, "name": "HISTORY"}
+  "sunday": [
+    {"startHour": 7, "startMin": 10, "endHour": 7, "endMin": 55, "name": "English - I"},
+    {"startHour": 7, "startMin": 55, "endHour": 8, "endMin": 40, "name": "Bangla - I"},
+    {"startHour": 8, "startMin": 40, "endHour": 9, "endMin": 20, "name": "Chemistry"},
+    {"startHour": 9, "startMin": 20, "endHour": 9, "endMin": 40, "name": "Recess Break"},
+    {"startHour": 9, "startMin": 40, "endHour": 10, "endMin": 20, "name": "Biology"},
+    {"startHour": 10, "startMin": 20, "endHour": 11, "endMin": 5, "name": "H. Math"},
+    {"startHour": 11, "startMin": 5, "endHour": 11, "endMin": 50, "name": "Physics"},
+    {"startHour": 11, "startMin": 50, "endHour": 12, "endMin": 15, "name": "Prayer Break"},
+    {"startHour": 12, "startMin": 15, "endHour": 13, "endMin": 0, "name": "G. Math"}
   ],
-  "saturday": [
-    {"startHour": 19, "startMin": 20, "endHour": 21, "endMin": 0, "name": "PROJECT Time!"},
-    {"startHour": 21, "startMin": 0, "endHour": 22, "endMin": 0, "name": "MATH"},
-    {"startHour": 22, "startMin": 0, "endHour": 23, "endMin": 59, "name": "ENGLISH"}
+  "monday": [
+    {"startHour": 7, "startMin": 10, "endHour": 7, "endMin": 55, "name": "Physics"},
+    {"startHour": 7, "startMin": 55, "endHour": 8, "endMin": 40, "name": "Chemistry"},
+    {"startHour": 8, "startMin": 40, "endHour": 9, "endMin": 20, "name": "Biology"},
+    {"startHour": 9, "startMin": 20, "endHour": 9, "endMin": 40, "name": "Recess Break"},
+    {"startHour": 9, "startMin": 40, "endHour": 10, "endMin": 20, "name": "G. Math"},
+    {"startHour": 10, "startMin": 20, "endHour": 11, "endMin": 5, "name": "Bangla - II"},
+    {"startHour": 11, "startMin": 5, "endHour": 11, "endMin": 50, "name": "BGS"},
+    {"startHour": 11, "startMin": 50, "endHour": 12, "endMin": 15, "name": "Prayer Break"},
+    {"startHour": 12, "startMin": 15, "endHour": 13, "endMin": 0, "name": "ISLAM / OR"}
+  ],
+  "tuesday": [
+    {"startHour": 7, "startMin": 10, "endHour": 7, "endMin": 55, "name": "Physics"},
+    {"startHour": 7, "startMin": 55, "endHour": 8, "endMin": 40, "name": "Biology"},
+    {"startHour": 8, "startMin": 40, "endHour": 9, "endMin": 20, "name": "G. Math"},
+    {"startHour": 9, "startMin": 20, "endHour": 9, "endMin": 40, "name": "Recess Break"},
+    {"startHour": 9, "startMin": 40, "endHour": 10, "endMin": 20, "name": "H. Math"},
+    {"startHour": 10, "startMin": 20, "endHour": 11, "endMin": 5, "name": "English - I"},
+    {"startHour": 11, "startMin": 5, "endHour": 11, "endMin": 50, "name": "QH"},
+    {"startHour": 11, "startMin": 50, "endHour": 12, "endMin": 15, "name": "Prayer Break"},
+    {"startHour": 12, "startMin": 15, "endHour": 13, "endMin": 0, "name": "Bangla - I"}
+  ],
+  "wednesday": [
+    {"startHour": 7, "startMin": 10, "endHour": 7, "endMin": 55, "name": "H. Math"},
+    {"startHour": 7, "startMin": 55, "endHour": 8, "endMin": 40, "name": "ICT"},
+    {"startHour": 8, "startMin": 40, "endHour": 9, "endMin": 20, "name": "Bangla - I"},
+    {"startHour": 9, "startMin": 20, "endHour": 9, "endMin": 40, "name": "Recess Break"},
+    {"startHour": 9, "startMin": 40, "endHour": 10, "endMin": 20, "name": "G. Math"},
+    {"startHour": 10, "startMin": 20, "endHour": 11, "endMin": 5, "name": "ISLAM / OR"},
+    {"startHour": 11, "startMin": 5, "endHour": 11, "endMin": 50, "name": "English - II"},
+    {"startHour": 11, "startMin": 50, "endHour": 12, "endMin": 15, "name": "Prayer Break"},
+    {"startHour": 12, "startMin": 15, "endHour": 13, "endMin": 0, "name": "Chemistry"}
+  ],
+  "thursday": [
+    {"startHour": 7, "startMin": 10, "endHour": 7, "endMin": 55, "name": "BGS"},
+    {"startHour": 7, "startMin": 55, "endHour": 8, "endMin": 40, "name": "QH"},
+    {"startHour": 8, "startMin": 40, "endHour": 9, "endMin": 20, "name": "PE"},
+    {"startHour": 9, "startMin": 20, "endHour": 9, "endMin": 40, "name": "Recess Break"},
+    {"startHour": 9, "startMin": 40, "endHour": 10, "endMin": 20, "name": "ISLAM / OR"},
+    {"startHour": 10, "startMin": 20, "endHour": 11, "endMin": 5, "name": "Bangla - II"},
+    {"startHour": 11, "startMin": 5, "endHour": 11, "endMin": 50, "name": "G. Math"},
+    {"startHour": 11, "startMin": 50, "endHour": 12, "endMin": 15, "name": "Prayer Break"},
+    {"startHour": 12, "startMin": 15, "endHour": 13, "endMin": 0, "name": "English - II"}
   ]
 }
